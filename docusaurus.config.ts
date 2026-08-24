@@ -23,7 +23,12 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
   onBrokenAnchors: 'warn',
-  onBrokenMarkdownLinks: 'throw',
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+  },
 
   future: {
     v4: true,
