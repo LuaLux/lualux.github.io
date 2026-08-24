@@ -1,0 +1,10 @@
+{
+  "label": "Language Reference",
+  "position": 3,
+  "collapsed": false,
+  "link": {
+    "type": "generated-index",
+    "title": "Language Reference",
+    "description": "Every language feature Lux adds on top of Lua, from the type system to classes, modules, pattern matching and nil safety."
+  }
+}

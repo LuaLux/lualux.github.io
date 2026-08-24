@@ -1,0 +1,10 @@
+{
+  "label": "Advanced",
+  "position": 5,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Advanced",
+    "description": "The full lux.toml reference plus the features you reach for once a project grows: compile-time annotations, execution sides and runtime reflection."
+  }
+}

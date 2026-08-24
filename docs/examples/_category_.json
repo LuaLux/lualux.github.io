@@ -1,0 +1,10 @@
+{
+  "label": "Examples",
+  "position": 6,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Examples",
+    "description": "Complete, runnable programs that put the language features together, from a first script to a multi-package project."
+  }
+}

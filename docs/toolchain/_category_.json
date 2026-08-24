@@ -1,0 +1,10 @@
+{
+  "label": "Toolchain",
+  "position": 4,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Toolchain",
+    "description": "The CLI, the package manager, the test runner, the REPL, the native bundler and the documentation generator. All of it ships in one binary."
+  }
+}
