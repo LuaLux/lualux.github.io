@@ -7,7 +7,7 @@ import Tabs from '@theme/Tabs';
 import type {ReactNode} from 'react';
 
 const VSCODE_MARKETPLACE =
-  'https://marketplace.visualstudio.com/items?itemName=DasDarki.neb-lang';
+  'https://marketplace.visualstudio.com/items?itemName=DasDarki.nebra';
 
 const INSTALL_BASH =
   'curl -fsSL https://raw.githubusercontent.com/nebra-lang/nebra/master/scripts/install.sh | bash';

@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://nebra-lang.github.io">
+    <img src="static/img/banner.png" alt="Nebra" width="560" />
+  </a>
+</p>
+
 # nebra-lang.github.io
 
 The documentation site for [Nebra](https://github.com/nebra-lang/nebra), a typed superset of Lua.
@@ -73,8 +79,10 @@ the sidebar, and renders the body heading as the page title.
 **Links between pages** are relative markdown paths, for example `../language/types.md`. The build
 verifies them.
 
-**Code blocks** use `nebra` for Nebra source and `lua` for compiled output or plain Lua. The Nebra grammar
-lives in `src/theme/prism-include-languages.js`.
+**Code blocks** use `nebra` for Nebra source and `lua` for compiled output or plain Lua. Prism has no
+Nebra grammar, so `src/theme/prism-include-languages.js` registers one on top of `prism-lua`,
+covering type annotations, `never`, `@annotations`, `---` doc comments and interpolated strings.
+`neb` is registered as an alias.
 
 **House style**: no em dashes anywhere. Use a hyphen with spaces around it instead.
 

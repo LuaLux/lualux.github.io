@@ -6,7 +6,7 @@ const GITHUB_ORG = 'nebra-lang';
 const GITHUB_REPO = 'nebra';
 const SITE_REPO = 'nebra-lang.github.io';
 const VSCODE_MARKETPLACE =
-  'https://marketplace.visualstudio.com/items?itemName=DasDarki.neb-lang';
+  'https://marketplace.visualstudio.com/items?itemName=DasDarki.nebra';
 
 const config: Config = {
   title: 'Nebra',

@@ -15,7 +15,7 @@ Install the **Nebra** extension from the Visual Studio Marketplace:
 
 <a
   className="button button--primary button--lg"
-  href="https://marketplace.visualstudio.com/items?itemName=DasDarki.neb-lang">
+  href="https://marketplace.visualstudio.com/items?itemName=DasDarki.nebra">
   Open in Marketplace
 </a>
 
@@ -25,7 +25,7 @@ Install the **Nebra** extension from the Visual Studio Marketplace:
 Or from the command line:
 
 ```bash
-code --install-extension DasDarki.neb-lang
+code --install-extension DasDarki.nebra
 ```
 
 The extension activates on any `.neb` or `.d.neb` file, finds `nebra` on your `PATH` and launches
