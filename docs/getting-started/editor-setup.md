@@ -100,7 +100,7 @@ file-types = ["neb"]
 roots = ["nebra.toml"]
 language-servers = ["nebra-lps"]
 
-[language-server.neb-lps]
+[language-server.nebra-lps]
 command = "nebra"
 args = ["lps"]
 ```
