@@ -1,23 +1,23 @@
 ---
 sidebar_position: 4
 title: "REPL"
-description: "The interactive Lux session, its commands and how it keeps state between lines."
+description: "The interactive Nebra session, its commands and how it keeps state between lines."
 ---
 
 # REPL
 
-`lux repl` is an interactive prompt that compiles each input on the fly and runs it in a persistent Lua state. Use it for scratch experiments, exploring a new library, debugging a tricky expression, or learning the language.
+`nebra repl` is an interactive prompt that compiles each input on the fly and runs it in a persistent Lua state. Use it for scratch experiments, exploring a new library, debugging a tricky expression, or learning the language.
 
 ```text
-$ lux repl
-Lux REPL 0.X.Y (target Lua54). Type :help for commands, :quit to exit.
+$ nebra repl
+Nebra REPL 0.X.Y (target Lua54). Type :help for commands, :quit to exit.
 Note: top-level `local` declarations don't persist between inputs - use `name = ...` for globals.
-lux> 2 + 2
+nebra> 2 + 2
 4
-lux> function greet(n: string): string
+nebra> function greet(n: string): string
 ...>     return "hi " .. n
 ...> end
-lux> greet("world")
+nebra> greet("world")
 hi world
 ```
 
@@ -31,7 +31,7 @@ Each non-blank line (or multi-line chunk) goes through:
 2. **Dual compile attempt** -
     1. First, the input is wrapped as `return <input>` and run through the full compiler. If it compiles, the chunk is run as an expression and its return value is printed (unless it's `nil`).
     2. If the expression form fails to parse, the raw input is compiled as a statement list and run. Statement output (e.g. `print` calls) flows through.
-3. **Eval** - the resulting Lua chunk is executed via `RunChunk` on the persistent `LuxRuntime`. Globals (and `function foo() ... end`-style declarations) persist across inputs.
+3. **Eval** - the resulting Lua chunk is executed via `RunChunk` on the persistent `NebraRuntime`. Globals (and `function foo() ... end`-style declarations) persist across inputs.
 
 So a bare `2 + 2` prints `4` (expression path), and `function greet(n) ... end` defines a Lua global that's reachable from the next input (statement path).
 
@@ -67,15 +67,15 @@ Lines that start with `:` are interpreted by the REPL, not the compiler:
 | `:help`, `:h`    | Show inline help with commands and tips                |
 | `:quit`, `:q`    | Exit the REPL (also `Ctrl+D` / EOF on stdin)           |
 | `:clear`         | Clear the screen                                       |
-| `:reset`         | Drop all globals; create a fresh `LuxRuntime`          |
-| `:load <path>`   | Read a `.lux` file and evaluate it in this session    |
+| `:reset`         | Drop all globals; create a fresh `NebraRuntime`          |
+| `:load <path>`   | Read a `.neb` file and evaluate it in this session    |
 
 `:load` is the quickest way to bring a bunch of definitions into the session: write them in a file, then iterate at the prompt. Example:
 
 ```text
-lux> :load examples/scratch.lux
+nebra> :load examples/scratch.neb
 loaded
-lux> Vec2(3, 4):length()
+nebra> Vec2(3, 4):length()
 5.0
 ```
 
@@ -86,7 +86,7 @@ lux> Vec2(3, 4):length()
 The token-counter detects unbalanced openers and keeps reading until they balance. Continuation lines use a different prompt (`...>`) so it's obvious you're still in the same chunk.
 
 ```text
-lux> if x > 0 then
+nebra> if x > 0 then
 ...>     print("positive")
 ...> else
 ...>     print("non-positive")
@@ -100,13 +100,13 @@ To abort a multi-line input, press `Ctrl+C` (the buffer is dropped; you can also
 
 ## Tips
 
-- **Print intermediate values** by typing the variable name: `lux> x` runs `return x` and prints the result.
+- **Print intermediate values** by typing the variable name: `nebra> x` runs `return x` and prints the result.
 - **Define a function once, iterate at call sites**: write the function with `function foo() … end` (global), then bounce values at it.
-- **Skip the runtime cost of repeated compilation** by collecting definitions in a `.lux` file and using `:load`. The REPL re-compiles each input from scratch (no incremental cache yet) - about 50-200ms per input depending on project size.
+- **Skip the runtime cost of repeated compilation** by collecting definitions in a `.neb` file and using `:load`. The REPL re-compiles each input from scratch (no incremental cache yet) - about 50-200ms per input depending on project size.
 - **Don't expect inline `import { x }` to survive**: imports use `local`, which doesn't persist. Either `:load` a file that does the imports + uses them, or call `require("mod").x` directly.
-- **CI smoke**: pipe a heredoc into `lux repl` for a quick "does this still work" check:
+- **CI smoke**: pipe a heredoc into `nebra repl` for a quick "does this still work" check:
   ```bash
-  printf '2 + 2\n:quit\n' | lux repl
+  printf '2 + 2\n:quit\n' | nebra repl
   ```
 
 ---
@@ -118,4 +118,4 @@ To abort a multi-line input, press `Ctrl+C` (the buffer is dropped; you can also
 - Each input goes through the full compiler pipeline. Acceptable for interactive work, but you'll feel the latency on a slow machine with a large project.
 - Multi-line input cannot be aborted with a single keystroke other than `Ctrl+C` (which terminates the process). A planned `:abort` command will clear just the buffer.
 
-These rough edges are tracked in [`compiler/TODO.md`](https://github.com/LuaLux/lux) - contributions welcome.
+These rough edges are tracked in [`compiler/TODO.md`](https://github.com/nebra-lang/nebra) - contributions welcome.

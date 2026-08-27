@@ -6,11 +6,11 @@ description: "Constructors, inheritance, abstract, override, protected, static, 
 
 # Classes & OOP
 
-Lux provides TypeScript-like classes that compile to idiomatic Lua metatable patterns.
+Nebra provides TypeScript-like classes that compile to idiomatic Lua metatable patterns.
 
 ## Basic Class
 
-```lux
+```nebra
 class Animal
     name: string
     age: number = 0
@@ -32,7 +32,7 @@ end
 
 ### Instantiation
 
-```lux
+```nebra
 local a = new Animal("Rex", 5)
 a:speak()                         -- instance method (colon syntax)
 Animal.create("Buddy")            -- static method (dot syntax)
@@ -40,7 +40,7 @@ Animal.create("Buddy")            -- static method (dot syntax)
 
 `new Animal(args)` compiles to `Animal.new(args)`.
 
-> **Always use `new` for construction.** Lux requires `new ClassName(args)` to
+> **Always use `new` for construction.** Nebra requires `new ClassName(args)` to
 > create an instance - even when the underlying runtime expects a
 > different call shape (e.g. `ClassName(args)` without a method qualifier).
 > The [`@overrideCtor`](../advanced/annotations.md#compiler-builtins) builtin rewrites
@@ -74,7 +74,7 @@ end
 
 ## Fields
 
-```lux
+```nebra
 class Config
     -- Instance field (on every instance)
     timeout: number = 30
@@ -92,7 +92,7 @@ end
 
 ## Methods
 
-```lux
+```nebra
 class Service
     -- Instance method (uses colon syntax)
     function process(data: string): string
@@ -116,10 +116,10 @@ class Service
 end
 ```
 
-> **Instance methods carry an implicit `self`.** Lux models every non-static
+> **Instance methods carry an implicit `self`.** Nebra models every non-static
 > class method as if its first parameter were `self: ThisClass`, even though
 > you don't write it. That mirrors Lua's runtime: `obj:method(args)` desugars
-> to `obj.method(obj, args)`, and Lux's codegen emits exactly that. Two
+> to `obj.method(obj, args)`, and Nebra's codegen emits exactly that. Two
 > practical consequences:
 >
 > - Instance methods must be called with **`obj:method(args)`** (colon).
@@ -133,7 +133,7 @@ end
 
 ## Inheritance
 
-```lux
+```nebra
 class Dog extends Animal
     breed: string
 
@@ -170,7 +170,7 @@ end
 
 `super(args)` can only be used inside a derived class constructor. It must be the first statement.
 
-```lux
+```nebra
 class Cat extends Animal
     constructor(name: string)
         super(name, 0)
@@ -182,7 +182,7 @@ end
 
 Mark methods that override a parent method with `override`:
 
-```lux
+```nebra
 class Circle extends Shape
     override function area(): number
         return 3.14 * self.radius ^ 2
@@ -196,7 +196,7 @@ If you define a method that exists in a parent without `override`, the compiler 
 
 Abstract classes cannot be instantiated directly. They may contain abstract methods (signature only, no body):
 
-```lux
+```nebra
 abstract class Shape
     abstract function area(): number
     abstract function perimeter(): number
@@ -244,7 +244,7 @@ Non-abstract subclasses **must** implement all abstract methods, or the compiler
 
 Protected fields and methods are accessible within the class and its subclasses:
 
-```lux
+```nebra
 class Base
     protected secret: string = "hidden"
 
@@ -264,7 +264,7 @@ Protected members are compiled as regular members on the class table (no runtime
 
 ## Getters & Setters
 
-```lux
+```nebra
 class Person
     _age: number = 0
 
@@ -286,10 +286,10 @@ print(p.age)         -- calls getter
 
 ### Lua Output (Accessors)
 
-When a class has getters/setters, Lux uses a proxy metatable:
+When a class has getters/setters, Nebra uses a proxy metatable:
 
 ```lua
-local function __lux_class_proxy(cls, parent)
+local function __nebra_class_proxy(cls, parent)
     return {
         __index = function(t, k)
             local g = cls["__get_" .. k]
@@ -318,7 +318,7 @@ Read-only properties (getter without setter) throw an error on write.
 
 ## Implementing Interfaces
 
-```lux
+```nebra
 class Sprite implements Drawable, Serializable
     override function draw(): void
         print("drawing")
@@ -338,7 +338,7 @@ Classes can define how built-in operators behave on their instances using the
 `operator` keyword. Each overload compiles to a Lua metamethod on the class
 table, so operator dispatch happens through Lua's normal metatable mechanism.
 
-```lux
+```nebra
 class Vector2
     x: number
     y: number
@@ -405,7 +405,7 @@ subclass overrides the inherited one.
 
 ## Exported Classes
 
-```lux
+```nebra
 export class User
     name: string
     email: string
@@ -423,7 +423,7 @@ end
 like `string`, `number`, `function` or `thread` - without touching its original definition.
 Inside an extension method `self` is the receiver.
 
-```lux
+```nebra
 extend number
     function double(): number
         return self * 2

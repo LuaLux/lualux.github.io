@@ -6,7 +6,7 @@ description: "Compile-time IR rewriting with builtin annotations and your own cu
 
 # Annotations
 
-Annotations are compile-time metadata that can **rewrite the IR**. They are Lux's answer to decorators (TypeScript / Python), attributes (C#), and macros (Rust): a way to attach behavior to declarations without changing the call sites.
+Annotations are compile-time metadata that can **rewrite the IR**. They are Nebra's answer to decorators (TypeScript / Python), attributes (C#), and macros (Rust): a way to attach behavior to declarations without changing the call sites.
 
 ```lua
 @deprecated("use Vec2 instead")
@@ -21,11 +21,11 @@ When the compiler encounters `@deprecated`, it looks up the annotation's definit
 
 ## Declaring an annotation
 
-An annotation is a regular Lux function that uses the `@annotation` meta-annotation:
+An annotation is a regular Nebra function that uses the `@annotation` meta-annotation:
 
 ```lua
--- lib/deprecated.lux
-import { Diagnostic } from "lux:ir"   -- IR helpers ship in the stdlib
+-- lib/deprecated.neb
+import { Diagnostic } from "nebra:ir"   -- IR helpers ship in the stdlib
 
 @annotation(targets = [AnnotationTarget.Function, AnnotationTarget.Method])
 export function deprecated(target, args)
@@ -38,7 +38,7 @@ export function deprecated(target, args)
 end
 ```
 
-The `targets` array names which declaration kinds this annotation is allowed to decorate - see `stdlib/annotation.d.lux` for the full enum (`Function`, `Method`, `Class`, `Interface`, `Field`, `Parameter`, `Variable`, ...).
+The `targets` array names which declaration kinds this annotation is allowed to decorate - see `stdlib/annotation.d.neb` for the full enum (`Function`, `Method`, `Class`, `Interface`, `Field`, `Parameter`, `Variable`, ...).
 
 ---
 
@@ -48,12 +48,12 @@ The `targets` array names which declaration kinds this annotation is allowed to 
 @deprecated("use Vec2 instead") function oldVec(...) ... end
         │
         ▼
-[ResolveAnnotations pass]   Discover annotation source files (via [annotations] in lux.toml)
+[ResolveAnnotations pass]   Discover annotation source files (via [annotations] in nebra.toml)
         │                    Parse them, register exported `@annotation`-marked functions
         ▼
 [ApplyAnnotations pass]      For each annotated declaration:
                               1. Serialize the target IR node to a Lua table tree
-                              2. Spin up a sandboxed LuxRuntime
+                              2. Spin up a sandboxed NebraRuntime
                               3. Push the table + the annotation arguments
                               4. Call the annotation function
                               5. Deserialize the return value back into IR
@@ -75,10 +75,10 @@ It does **not** have access to: `io`, `os`, `package`, `require`, `load`, `dofil
 Tell the compiler where annotation definitions live:
 
 ```toml
-# lux.toml
+# nebra.toml
 annotations = [
-    "lib/annotations",          # directory: every .lux in here is scanned
-    "lib/special.lux",          # individual file
+    "lib/annotations",          # directory: every .neb in here is scanned
+    "lib/special.neb",          # individual file
 ]
 ```
 
@@ -131,14 +131,14 @@ A few annotations ship with the stdlib:
 - `@pure` - declare that a function has no side effects; enables more aggressive dead-code-elimination of unused return values.
 - `@experimental` - emit a one-time warning per file that references the symbol.
 
-The full list lives in `stdlib/annotation.d.lux`.
+The full list lives in `stdlib/annotation.d.neb`.
 
 ### Compiler builtins
 
 A separate, smaller set of annotations is recognised directly by the
 compiler - they don't go through the user-script annotation pipeline,
 can't be redefined or rewritten, and don't need an `[annotations]` entry in
-`lux.toml`. They mutate compile-time behaviour rather than IR.
+`nebra.toml`. They mutate compile-time behaviour rather than IR.
 
 - `@side(client | server | shared)` - multiplayer-sandbox execution-side
   scoping for declarations. See [Sides](./sides.md) for the full mental
@@ -170,7 +170,7 @@ can't be redefined or rewritten, and don't need an `[annotations]` entry in
 Here's `@memoize` - wraps a function so it caches results by argument tuple:
 
 ```lua
--- lib/memoize.lux
+-- lib/memoize.neb
 @annotation(targets = [AnnotationTarget.Function])
 export function memoize(target, _args)
     local original = target.body

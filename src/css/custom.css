@@ -1,7 +1,7 @@
 /**
- * Lux theme.
+ * Nebra theme.
  *
- * The palette is sampled straight from the Lux logo: the electric blue of the
+ * The palette is sampled straight from the Nebra logo: the electric blue of the
  * crescent (#1a5ce6 through #4da6f7), the near-black navy of the code document
  * (#000c1c) and the bluish silver of the wordmark (#d8e0f0). Dark mode is the
  * default, so it gets the richer treatment.
@@ -19,12 +19,12 @@
   --ifm-color-primary-lighter: #487deb;
   --ifm-color-primary-lightest: #5f8dee;
 
-  --lux-crescent-deep: #0a3f9e;
-  --lux-crescent-mid: #1a5ce6;
-  --lux-crescent-bright: #4da6f7;
-  --lux-sparkle: #cfe4ff;
-  --lux-silver: #d8e0f0;
-  --lux-ink: #000c1c;
+  --nebra-crescent-deep: #0a3f9e;
+  --nebra-crescent-mid: #1a5ce6;
+  --nebra-crescent-bright: #4da6f7;
+  --nebra-sparkle: #cfe4ff;
+  --nebra-silver: #d8e0f0;
+  --nebra-ink: #000c1c;
 
   --ifm-font-family-base: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto,
     sans-serif;
@@ -40,10 +40,10 @@
 
   --docusaurus-highlighted-code-line-bg: rgba(26, 92, 230, 0.12);
 
-  --lux-surface: #ffffff;
-  --lux-surface-raised: #f6f8fc;
-  --lux-border: rgba(10, 63, 158, 0.16);
-  --lux-glow: transparent;
+  --nebra-surface: #ffffff;
+  --nebra-surface-raised: #f6f8fc;
+  --nebra-border: rgba(10, 63, 158, 0.16);
+  --nebra-glow: transparent;
 }
 
 [data-theme='dark'] {
@@ -73,10 +73,10 @@
 
   --docusaurus-highlighted-code-line-bg: rgba(77, 166, 247, 0.16);
 
-  --lux-surface: #0a121f;
-  --lux-surface-raised: #0e1828;
-  --lux-border: rgba(77, 166, 247, 0.16);
-  --lux-glow: rgba(26, 92, 230, 0.22);
+  --nebra-surface: #0a121f;
+  --nebra-surface-raised: #0e1828;
+  --nebra-border: rgba(77, 166, 247, 0.16);
+  --nebra-glow: rgba(26, 92, 230, 0.22);
 }
 
 html {
@@ -117,7 +117,7 @@ body {
 
 .navbar {
   backdrop-filter: saturate(160%) blur(14px);
-  border-bottom: 1px solid var(--lux-border);
+  border-bottom: 1px solid var(--nebra-border);
 }
 
 .navbar__logo {
@@ -133,9 +133,9 @@ body {
 [data-theme='dark'] .navbar__title {
   background: linear-gradient(
     100deg,
-    var(--lux-silver) 0%,
+    var(--nebra-silver) 0%,
     #ffffff 40%,
-    var(--lux-crescent-bright) 100%
+    var(--nebra-crescent-bright) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -201,7 +201,7 @@ body {
 .markdown h2 {
   margin-top: 2.6rem;
   padding-bottom: 0.35rem;
-  border-bottom: 1px solid var(--lux-border);
+  border-bottom: 1px solid var(--nebra-border);
   letter-spacing: -0.015em;
 }
 
@@ -223,14 +223,14 @@ body {
 }
 
 .markdown table th {
-  background: var(--lux-surface-raised);
+  background: var(--nebra-surface-raised);
   font-weight: 600;
   letter-spacing: 0.01em;
 }
 
 .markdown blockquote {
   border-left: 3px solid var(--ifm-color-primary);
-  background: var(--lux-surface-raised);
+  background: var(--nebra-surface-raised);
   border-radius: 0 var(--ifm-global-radius) var(--ifm-global-radius) 0;
   padding: 0.9rem 1.2rem;
 }
@@ -239,17 +239,17 @@ body {
 
 [data-theme='dark'] .theme-code-block,
 [data-theme='dark'] div[class^='codeBlockContainer'] {
-  border: 1px solid var(--lux-border);
+  border: 1px solid var(--nebra-border);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 [data-theme='dark'] div[class^='codeBlockContainer'] pre {
-  background-color: var(--lux-ink) !important;
+  background-color: var(--nebra-ink) !important;
 }
 
 [data-theme='dark'] div[class^='codeBlockTitle'] {
   background-color: #071020;
-  border-bottom: 1px solid var(--lux-border);
+  border-bottom: 1px solid var(--nebra-border);
   font-family: var(--ifm-font-family-monospace);
   font-size: 0.8rem;
   color: #9fb2ce;
@@ -257,7 +257,7 @@ body {
 
 code {
   border-radius: 0.35rem;
-  border: 1px solid var(--lux-border);
+  border: 1px solid var(--nebra-border);
   padding: 0.14rem 0.36rem;
 }
 
@@ -270,7 +270,7 @@ a code {
   color: inherit;
 }
 
-/* Lux-specific Prism tokens defined in src/theme/prism-include-languages.js. */
+/* Nebra-specific Prism tokens defined in src/theme/prism-include-languages.js. */
 .token.primitive-type,
 .token.type-annotation,
 .token.return-type {
@@ -302,7 +302,7 @@ a code {
 /* --- Pagination and cards --- */
 
 .pagination-nav__link {
-  border-color: var(--lux-border);
+  border-color: var(--nebra-border);
   border-radius: var(--ifm-global-radius);
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
@@ -313,8 +313,8 @@ a code {
 }
 
 article .card {
-  border: 1px solid var(--lux-border);
-  background: var(--lux-surface);
+  border: 1px solid var(--nebra-border);
+  background: var(--nebra-surface);
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
@@ -343,7 +343,7 @@ article .card:hover {
 /* --- Footer --- */
 
 .footer {
-  border-top: 1px solid var(--lux-border);
+  border-top: 1px solid var(--nebra-border);
 }
 
 .footer__title {
@@ -363,14 +363,14 @@ article .card:hover {
 
 /* --- Home page --- */
 
-.lux-hero {
+.neb-hero {
   position: relative;
   overflow: hidden;
   padding: 5rem 0 4.5rem;
   text-align: center;
 }
 
-[data-theme='dark'] .lux-hero::after {
+[data-theme='dark'] .neb-hero::after {
   content: '';
   position: absolute;
   left: 50%;
@@ -386,7 +386,7 @@ article .card:hover {
   );
 }
 
-.lux-hero__inner {
+.neb-hero__inner {
   position: relative;
   z-index: 1;
   display: flex;
@@ -395,13 +395,13 @@ article .card:hover {
   gap: 1.4rem;
 }
 
-.lux-hero__logo {
+.neb-hero__logo {
   width: 8.5rem;
   height: auto;
   filter: drop-shadow(0 0 2.5rem rgba(26, 92, 230, 0.45));
 }
 
-.lux-hero__title {
+.neb-hero__title {
   font-size: clamp(2.6rem, 7vw, 4.2rem);
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -409,28 +409,28 @@ article .card:hover {
   line-height: 1.05;
   background: linear-gradient(
     100deg,
-    var(--lux-silver) 0%,
+    var(--nebra-silver) 0%,
     #ffffff 38%,
-    var(--lux-crescent-bright) 100%
+    var(--nebra-crescent-bright) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-[data-theme='light'] .lux-hero__title {
+[data-theme='light'] .neb-hero__title {
   background: linear-gradient(
     100deg,
     #0b1b3a 0%,
     #143a86 40%,
-    var(--lux-crescent-mid) 100%
+    var(--nebra-crescent-mid) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.lux-hero__tagline {
+.neb-hero__tagline {
   font-size: clamp(1.05rem, 2.2vw, 1.35rem);
   max-width: 44rem;
   margin: 0;
@@ -439,7 +439,7 @@ article .card:hover {
   line-height: 1.55;
 }
 
-.lux-hero__buttons {
+.neb-hero__buttons {
   display: flex;
   gap: 0.8rem;
   flex-wrap: wrap;
@@ -447,7 +447,7 @@ article .card:hover {
   margin-top: 0.4rem;
 }
 
-.lux-hero__badges {
+.neb-hero__badges {
   display: flex;
   gap: 0.55rem;
   flex-wrap: wrap;
@@ -455,34 +455,34 @@ article .card:hover {
   margin-top: 0.3rem;
 }
 
-.lux-badge {
+.neb-badge {
   font-size: 0.76rem;
   font-family: var(--ifm-font-family-monospace);
   padding: 0.22rem 0.6rem;
   border-radius: 999px;
-  border: 1px solid var(--lux-border);
+  border: 1px solid var(--nebra-border);
   color: var(--ifm-color-primary-light);
   background: rgba(77, 166, 247, 0.07);
 }
 
-.lux-section {
+.neb-section {
   padding: 3.5rem 0;
 }
 
-.lux-section--alt {
-  background: var(--lux-surface);
-  border-top: 1px solid var(--lux-border);
-  border-bottom: 1px solid var(--lux-border);
+.neb-section--alt {
+  background: var(--nebra-surface);
+  border-top: 1px solid var(--nebra-border);
+  border-bottom: 1px solid var(--nebra-border);
 }
 
-.lux-section__heading {
+.neb-section__heading {
   text-align: center;
   margin-bottom: 0.5rem;
   font-size: clamp(1.7rem, 3.4vw, 2.2rem);
   letter-spacing: -0.025em;
 }
 
-.lux-section__sub {
+.neb-section__sub {
   text-align: center;
   max-width: 42rem;
   margin: 0 auto 2.5rem;
@@ -490,54 +490,54 @@ article .card:hover {
   line-height: 1.6;
 }
 
-.lux-grid {
+.neb-grid {
   display: grid;
   gap: 1.1rem;
   grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
 }
 
-.lux-card {
-  border: 1px solid var(--lux-border);
+.neb-card {
+  border: 1px solid var(--nebra-border);
   border-radius: var(--ifm-global-radius);
-  background: var(--lux-surface);
+  background: var(--nebra-surface);
   padding: 1.4rem;
   transition: border-color 0.18s ease, transform 0.18s ease,
     box-shadow 0.18s ease;
   height: 100%;
 }
 
-.lux-card:hover {
+.neb-card:hover {
   border-color: var(--ifm-color-primary);
   transform: translateY(-3px);
-  box-shadow: 0 0.6rem 2rem var(--lux-glow);
+  box-shadow: 0 0.6rem 2rem var(--nebra-glow);
 }
 
-.lux-card__title {
+.neb-card__title {
   font-size: 1.05rem;
   font-weight: 650;
   margin: 0 0 0.5rem;
   color: var(--ifm-heading-color);
 }
 
-.lux-card__body {
+.neb-card__body {
   margin: 0;
   font-size: 0.93rem;
   line-height: 1.6;
   opacity: 0.85;
 }
 
-.lux-card--link {
+.neb-card--link {
   display: block;
   color: inherit;
   text-decoration: none;
 }
 
-.lux-card--link:hover {
+.neb-card--link:hover {
   color: inherit;
   text-decoration: none;
 }
 
-.lux-split {
+.neb-split {
   display: grid;
   gap: 1.6rem;
   grid-template-columns: 1fr 1fr;
@@ -545,16 +545,16 @@ article .card:hover {
 }
 
 @media (max-width: 996px) {
-  .lux-split {
+  .neb-split {
     grid-template-columns: 1fr;
   }
 
-  .lux-hero {
+  .neb-hero {
     padding: 3.5rem 0 3rem;
   }
 }
 
-.lux-split__label {
+.neb-split__label {
   font-family: var(--ifm-font-family-monospace);
   font-size: 0.74rem;
   text-transform: uppercase;
@@ -563,14 +563,14 @@ article .card:hover {
   margin-bottom: 0.5rem;
 }
 
-.lux-install {
+.neb-install {
   max-width: 46rem;
   margin: 0 auto;
 }
 
-.lux-install .tabs-container {
-  border: 1px solid var(--lux-border);
+.neb-install .tabs-container {
+  border: 1px solid var(--nebra-border);
   border-radius: var(--ifm-global-radius);
   padding: 0.6rem 0.9rem 0.2rem;
-  background: var(--lux-surface);
+  background: var(--nebra-surface);
 }

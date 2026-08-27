@@ -1,20 +1,20 @@
 ---
 sidebar_position: 1
-title: "Configuration (`lux.toml`)"
-description: "Every lux.toml key and section: metadata, dependencies, codegen, rules, stdlib, scripts, sides and reflection."
+title: "Configuration (`nebra.toml`)"
+description: "Every nebra.toml key and section: metadata, dependencies, codegen, rules, stdlib, scripts, sides and reflection."
 ---
 
-# Configuration (`lux.toml`)
+# Configuration (`nebra.toml`)
 
-Every Lux project lives next to a `lux.toml` file. It declares metadata
+Every Nebra project lives next to a `nebra.toml` file. It declares metadata
 (name, version, target Lua dialect), tells the compiler where source lives,
 selects language rules, lists dependencies, and tunes the package manager and
 test runner. The file is plain TOML and is loaded by the CLI on every
 command that needs project context (`build`, `run`, `test`, `install`,
 `docs`, `compile`).
 
-The CLI walks the current directory and its ancestors looking for `lux.toml`
-- you can run a Lux command from anywhere inside the project tree. A
+The CLI walks the current directory and its ancestors looking for `nebra.toml`
+- you can run a Nebra command from anywhere inside the project tree. A
 minimal config:
 
 ```toml
@@ -48,27 +48,27 @@ library calls the codegen pass is allowed to use (e.g. integer division
 
 ### `entry` (string, optional)
 
-Entry-point Lux file for `lux run` / `lux compile`. Defaults to
-`<source>/index.lux` when omitted.
+Entry-point Nebra file for `nebra run` / `nebra compile`. Defaults to
+`<source>/index.neb` when omitted.
 
 ### `output` (string, default `"out"`)
 
 Directory the transpiled Lua files are written to (relative to the project
-root). Wiped on every `lux build` unless `--no-clean` is passed.
+root). Wiped on every `nebra build` unless `--no-clean` is passed.
 
 ### `source` (string, default `"src"`)
 
-Root directory the compiler scans for `.lux` sources. Files are imported
+Root directory the compiler scans for `.neb` sources. Files are imported
 relative to this directory.
 
 ### `extends` (list of string, optional)
 
-Other `lux.toml` files (relative paths) whose settings are loaded as a
+Other `nebra.toml` files (relative paths) whose settings are loaded as a
 baseline before this file's keys override them. Useful for sharing a base
 config across multiple projects in a monorepo:
 
 ```toml
-extends = ["../shared/lux.base.toml"]
+extends = ["../shared/nebra.base.toml"]
 ```
 
 `extends` chains transitively; a recursion limit of 10 levels guards
@@ -97,39 +97,39 @@ shipping to environments that load source at runtime.
 
 ### `generate_docs` (bool, default `false`)
 
-When `true`, `lux build` also runs the same emission step as `lux docs`,
+When `true`, `nebra build` also runs the same emission step as `nebra docs`,
 producing a doc site next to the generated Lua. See
 [Doc Comments](../toolchain/doc-comments.md) and [CLI Reference](../toolchain/cli.md).
 
 ### `generate_declarations` (bool, default `true`)
 
-When `true`, `lux build` also emits `.d.lux` declaration files alongside
+When `true`, `nebra build` also emits `.d.neb` declaration files alongside
 each compiled module so downstream consumers can type-check against this
 project without re-reading the source.
 
 ### `globals` (list of string, default `[]`)
 
-Extra directories or single files that are scanned for `.d.lux` files at
+Extra directories or single files that are scanned for `.d.neb` files at
 build time. The found declarations are loaded into the global type
 universe - useful when you want to type external Lua APIs that ship
 with the project (game-engine globals, framework macros, etc.).
 
 ```toml
-globals = ["types", "vendor/lua-engine.d.lux"]
+globals = ["types", "vendor/lua-engine.d.neb"]
 ```
 
-Directories are scanned recursively. Files must already end in `.d.lux`.
+Directories are scanned recursively. Files must already end in `.d.neb`.
 
 ### `annotations` (list of string, default `[]`)
 
-Directories or single `.lux` files that contain user-defined annotation
+Directories or single `.neb` files that contain user-defined annotation
 plugins. See [Annotations](./annotations.md) for the plugin format.
 
 ### `types_only` (bool, default `false`)
 
 Marks the project as a *types-only* package - it ships only
-`.d.lux` declarations and has no runnable source. `lux build`, `compile`,
-`run` and `test` become graceful no-ops; `lux docs` still works. Use this
+`.d.neb` declarations and has no runnable source. `nebra build`, `compile`,
+`run` and `test` become graceful no-ops; `nebra docs` still works. Use this
 for type-shim packages (the moral equivalent of TypeScript's `@types/*`).
 
 ### `assets` (table, optional)
@@ -147,11 +147,11 @@ to the project root; values are paths relative to the output root.
 
 Three independent dictionaries, all keyed by package name. Values can be a
 plain specifier string or an inline table with the same fields used by
-`lux add`.
+`nebra add`.
 
 ```toml
 [dependencies]
-nanos-world-types = "github:LuaLux/nanos-world-types@v1.2"
+nanos-world-types = "github:nebra-lang/nanos-world-types@v1.2"
 inspect = "github:kikito/inspect.lua"
 
 [dev_dependencies]
@@ -185,13 +185,13 @@ strip_unused = true            # default true
 ```
 
 - **`index_base`** - what `array[0]` translates to. `0` rewrites
-  every index expression to `array[expr + 1]` at codegen time so Lux looks
+  every index expression to `array[expr + 1]` at codegen time so Nebra looks
   zero-indexed while the emitted Lua stays valid. Set to `1` if you want
-  Lux to inherit Lua's quirky one-based indexing.
+  Nebra to inherit Lua's quirky one-based indexing.
 - **`concat_operator`** - symbol that becomes the string-concat
   operator in addition to `..`. The default `"+"` lets you write
   `"hello " + name` like JavaScript. The token must still be a valid
-  binary operator in the Lux grammar.
+  binary operator in the Nebra grammar.
 - **`string_interpolation`** - enables `` `hello {name}` ``
   template-literal syntax. Lowers to `"hello " .. tostring(name)`.
 - **`alt_boolean_operators`** - allow `&&`, `||`, `!`, `!=` in
@@ -201,13 +201,13 @@ strip_unused = true            # default true
 - **`semicolons`** - `"optional"` (default), `"required"`, or
   `"forbidden"`. Controls whether the generated Lua allows / requires / rejects
   trailing `;` on statements.
-- **`import_statement`** - pattern emitted for every Lux `import`.
+- **`import_statement`** - pattern emitted for every Nebra `import`.
   `%s` is replaced with the **quoted** module path string. Override to
   integrate with a custom module loader (e.g. `"__require(%s)"` or
   `'Package.Require(%s)'`).
 - **`import_extension`** - suffix appended to every import path
-  before it lands in the `%s` substitution. Lux *always* strips a
-  trailing `.lux` from the source path first - that extension is never
+  before it lands in the `%s` substitution. Nebra *always* strips a
+  trailing `.neb` from the source path first - that extension is never
   meaningful in the lowered Lua. Set this to `".lua"` for runtimes whose
   loader requires it (e.g. nanos-world: `Package.Require("Foo.lua")`).
   Default empty.
@@ -270,7 +270,7 @@ enabled = true                          # default true
 disabled = ["string.dump", "io"]        # default []
 ```
 
-The Lux compiler ships with `.d.lux` declarations for the Lua standard
+The Nebra compiler ships with `.d.neb` declarations for the Lua standard
 library so you get types on `print`, `string.format`, `math.pi`, etc.
 out of the box.
 
@@ -301,10 +301,10 @@ post_install = []
 Lists of shell commands run at specific points:
 
 - **`pre_build`** / **`post_build`** - run before / after every
-  `lux build`.
-- **`pre_install`** / **`post_install`** - run by `lux install` for
+  `nebra build`.
+- **`pre_install`** / **`post_install`** - run by `nebra install` for
   *this* package when consumed as a dependency. **Off by default;**
-  opt-in via `lux install --allow-scripts` to protect against malicious
+  opt-in via `nebra install --allow-scripts` to protect against malicious
   packages.
 
 Commands run in the project root with the project's environment.
@@ -318,8 +318,8 @@ linker = "auto"                # default "auto"
 allow_scripts = false          # default false
 ```
 
-- **`linker`** - how `lux install` materialises packages from the
-  global store into `lux_modules/`:
+- **`linker`** - how `nebra install` materialises packages from the
+  global store into `nebra_modules/`:
     - `"auto"` - symlink on Unix, junction on Windows (default)
     - `"symlink"` - force POSIX symlink
     - `"junction"` - force Windows directory junction
@@ -327,14 +327,14 @@ allow_scripts = false          # default false
       tool can't follow links)
 - **`allow_scripts`** - project-level opt-in equivalent to the
   CLI flag. When `true`, lifecycle hooks declared in dependencies'
-  `[scripts]` blocks are allowed to run during `lux install`.
+  `[scripts]` blocks are allowed to run during `nebra install`.
 
 ## `[test]` - test runner
 
 ```toml
 [test]
 dirs = ["tests", "test"]               # default ["tests", "test"]
-patterns = ["_test.lux", ".test.lux"]  # default
+patterns = ["_test.neb", ".test.neb"]  # default
 quiet = false                           # default false
 ```
 
@@ -380,7 +380,7 @@ mode = "all"        # "all" (default) | "annotated" | "none"
 ```
 
 Controls how much runtime reflection metadata the compiler emits into the output
-(the global `_G.__lux_reflect` registry read by the `reflect` library).
+(the global `_G.__nebra_reflect` registry read by the `reflect` library).
 
 | `mode` | Emits |
 | --- | --- |
@@ -397,7 +397,7 @@ optimizations. See [Reflection](./reflection.md) for the full API.
 name = "my-game"
 version = "0.3.1"
 target = "5.4"
-entry = "src/init.lux"
+entry = "src/init.neb"
 output = "build"
 source = "src"
 preset = "relaxed"
@@ -406,7 +406,7 @@ annotations = ["annotations"]
 
 [dependencies]
 inspect = "github:kikito/inspect.lua@v3"
-nanos-world-types = "github:LuaLux/nanos-world-types@v1"
+nanos-world-types = "github:nebra-lang/nanos-world-types@v1"
 
 [dev_dependencies]
 luaunit = "github:bluebird75/luaunit@v3.4"

@@ -10,32 +10,32 @@ An annotation is a function that runs **inside the compiler**. It receives a dec
 structure, rewrites it, and hands it back. The rest of the pipeline then proceeds as if you had
 written the modified version by hand.
 
-This is the one Lux feature with no runtime cost *and* no runtime presence. There is no decorator
+This is the one Nebra feature with no runtime cost *and* no runtime presence. There is no decorator
 object, no wrapper closure, no registry. Whatever the annotation produces is simply what gets
 compiled.
 
 ## The example
 
 This is `examples/annotation-demo` from the
-[repository](https://github.com/LuaLux/lux/tree/master/examples/annotation-demo). The `@log`
+[repository](https://github.com/nebra-lang/nebra/tree/master/examples/annotation-demo). The `@log`
 annotation prepends a `print` to the body of every function it decorates.
 
 ### Registering the directory
 
-```toml title="lux.toml"
+```toml title="nebra.toml"
 annotations = ["annotations"]
 
 [code]
 index_base = 1
 ```
 
-`annotations = [...]` lists the directories the compiler scans. Every `.lux` file in there that
+`annotations = [...]` lists the directories the compiler scans. Every `.neb` file in there that
 exports an `annotation` table and an `apply` function becomes available as `@name`, where `name` is
 the file name.
 
 ### The definition
 
-```lux title="annotations/log.lux"
+```nebra title="annotations/log.neb"
 export local annotation = {
     target = "Function",
     params = {
@@ -73,7 +73,7 @@ so on. You are building the same tree the parser would have built.
 
 ### Using it
 
-```lux title="src/main.lux"
+```nebra title="src/main.neb"
 @log
 function greet(name: string): string
     return "Hello, " .. name .. "!"
@@ -89,7 +89,7 @@ function describe(n: number): string
     return "the number is " .. tostring(n)
 end
 
-print(greet("Lux"))
+print(greet("Nebra"))
 print("2 + 3 =", add(2, 3))
 print(describe(42))
 ```
@@ -97,12 +97,12 @@ print(describe(42))
 All three call forms are supported: bare, positional, and named.
 
 ```bash
-lux run
+nebra run
 ```
 
 ```
 [log] greet
-Hello, Lux!
+Hello, Nebra!
 [log] computing sum
 2 + 3 =	5
 [log] stringifying number
@@ -124,7 +124,7 @@ function describe(n)
 	print("[log] stringifying number")
 	return "the number is " .. tostring(n)
 end
-print(greet("Lux"))
+print(greet("Nebra"))
 print("2 + 3 =", add(2, 3))
 print(describe(42))
 ```
@@ -154,7 +154,7 @@ time and cannot see runtime values.
 
 ## Debugging an annotation
 
-Because `apply` is ordinary Lux code running in the compiler, you can `print` from it. Output shows
+Because `apply` is ordinary Nebra code running in the compiler, you can `print` from it. Output shows
 up during compilation, not at run time. If the rewritten IR is malformed, the compiler reports it
 against the annotation rather than crashing:
 

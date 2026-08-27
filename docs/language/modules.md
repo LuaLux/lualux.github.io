@@ -6,13 +6,13 @@ description: "import and export, named, default, namespace and side-effect impor
 
 # Modules (Import / Export)
 
-Lux uses an ES-style module system that compiles to Lua's `require()`.
+Nebra uses an ES-style module system that compiles to Lua's `require()`.
 
 ## Importing
 
 ### Named Import
 
-```lux
+```nebra
 import { Vector2, Rect } from "engine/math"
 
 local v = Vector2.new(1, 2)
@@ -28,19 +28,19 @@ local Rect = __mod.Rect
 
 ### Aliased Import
 
-```lux
+```nebra
 import { Vector2 as Vec2, Rect as Box } from "engine/math"
 ```
 
 ### Default Import
 
-```lux
+```nebra
 import Player from "entities/player"
 ```
 
 ### Namespace Import
 
-```lux
+```nebra
 import * as utils from "lib/utils"
 
 utils.debug()
@@ -51,7 +51,7 @@ utils.format("hello")
 
 Runs the module without binding any names:
 
-```lux
+```nebra
 import "polyfill"
 ```
 
@@ -59,7 +59,7 @@ import "polyfill"
 
 ### Export Function
 
-```lux
+```nebra
 export function calculate(x: number): number
     return x * 2
 end
@@ -67,7 +67,7 @@ end
 
 ### Export Local Function
 
-```lux
+```nebra
 export local function helper(): string
     return "help"
 end
@@ -75,14 +75,14 @@ end
 
 ### Export Variable
 
-```lux
+```nebra
 export local PI: number = 3.14159
 export local mut counter: number = 0
 ```
 
 ### Export Enum
 
-```lux
+```nebra
 export enum LogLevel
     Debug
     Info
@@ -93,7 +93,7 @@ end
 
 ### Export Class
 
-```lux
+```nebra
 export class Connection
     host: string
     port: number
@@ -107,7 +107,7 @@ end
 
 ### Export Interface
 
-```lux
+```nebra
 export interface Handler
     function handle(data: string): void
 end
@@ -132,7 +132,7 @@ return {
 
 The import path is passed to the `import_statement` config option (default: `require(%s)`). Paths use forward slashes and no file extension:
 
-```lux
+```nebra
 import { Foo } from "lib/foo"        -- require("lib/foo")
 import Bar from "src/components/bar"  -- require("src/components/bar")
 ```

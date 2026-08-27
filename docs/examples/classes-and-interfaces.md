@@ -6,12 +6,12 @@ description: "Modelling behaviour with interfaces, abstract classes, inheritance
 
 # Classes and Interfaces
 
-Lua gives you tables and metatables and leaves the object model to you. Lux gives you a concrete one
+Lua gives you tables and metatables and leaves the object model to you. Nebra gives you a concrete one
 and compiles it down to exactly the tables and metatables you would have written.
 
 ## The program
 
-```lux title="src/main.lux"
+```nebra title="src/main.neb"
 --- The shape every species in the zoo shares.
 interface Animal
     name: string
@@ -86,7 +86,7 @@ rex is a Pet: true
 `interface Animal` never exists at run time. It says that anything claiming to be an `Animal` has a
 `name: string` field and a `sound(): string` method. That is what lets
 
-```lux
+```nebra
 local critters: Animal[] = { new Cat("Whiskers", 3), new Dog("Rex", 5) }
 ```
 
@@ -174,7 +174,7 @@ compiles to a small helper that walks the metatable chain, emitted once per file
 
 Write the constructor out explicitly in every subclass and forward with `super(...)`:
 
-```lux
+```nebra
 class Cat extends Pet
     constructor(name: string, age: number)
         super(name, age)

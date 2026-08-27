@@ -8,7 +8,7 @@ description: "local and local mut, constants, immutability rules, and deep freez
 
 ## Local Variables
 
-```lux
+```nebra
 local x = 42
 local name: string = "hello"
 local a, b, c = 1, 2, 3
@@ -19,7 +19,7 @@ local typed_a: number, typed_b: string = 1, "two"
 
 By default, variables are mutable. With `immutable_default = true` in config, variables are immutable by default:
 
-```lux
+```nebra
 -- With immutable_default = false (default)
 local x = 1            -- mutable
 local y <const> = 2    -- immutable (Lua 5.4 attribute)
@@ -31,7 +31,7 @@ local mut y = 2        -- explicitly mutable with `mut`
 
 ## Lua 5.4 Attributes
 
-```lux
+```nebra
 local x <const> = 42
 local file <close> = io.open("data.txt")
 ```
@@ -40,7 +40,7 @@ local file <close> = io.open("data.txt")
 
 When `deep_freeze = true` in config, immutable table variables are frozen at runtime:
 
-```lux
+```nebra
 local data = { a = 1, b = 2 }
 -- data.a = 3  -- runtime error: attempt to modify frozen table
 ```
@@ -49,7 +49,7 @@ Compiles to a `setmetatable` wrapper that blocks `__newindex`.
 
 ## Assignment
 
-```lux
+```nebra
 x = 42
 a, b = b, a                      -- swap
 obj.field = "value"
@@ -58,7 +58,7 @@ arr[1] = "first"
 
 ## Multiple Assignment
 
-```lux
+```nebra
 local x, y, z = 1, 2, 3
 x, y = y, x                      -- swap
 ```

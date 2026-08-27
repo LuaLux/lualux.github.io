@@ -12,7 +12,7 @@ Enums define a set of named constants.
 
 Values are auto-numbered starting from 0:
 
-```lux
+```nebra
 enum Color
     Red
     Green
@@ -28,7 +28,7 @@ local Color = {Red = 0, Green = 1, Blue = 2}
 
 ## Explicit Values
 
-```lux
+```nebra
 enum HttpStatus
     Ok = 200
     NotFound = 404
@@ -38,7 +38,7 @@ end
 
 ## String Enums
 
-```lux
+```nebra
 enum Direction
     Up = "up"
     Down = "down"
@@ -58,7 +58,7 @@ Direction["down"] = "Down"
 
 ## Usage
 
-```lux
+```nebra
 local c = Color.Red
 if c == Color.Green then
     print("Green!")
@@ -67,7 +67,7 @@ end
 
 ## Enums in Match
 
-```lux
+```nebra
 match status
 case HttpStatus.Ok then
     print("Success")
@@ -82,7 +82,7 @@ end
 
 Enums are iterable:
 
-```lux
+```nebra
 for name, value in pairs(Color) do
     print(name, value)
 end
@@ -90,7 +90,7 @@ end
 
 ## Exported Enums
 
-```lux
+```nebra
 export enum Severity
     Low
     Medium

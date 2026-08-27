@@ -2,18 +2,18 @@ import type * as Preset from '@docusaurus/preset-classic';
 import type {Config} from '@docusaurus/types';
 import {themes as prismThemes} from 'prism-react-renderer';
 
-const GITHUB_ORG = 'LuaLux';
-const GITHUB_REPO = 'lux';
-const SITE_REPO = 'lualux.github.io';
+const GITHUB_ORG = 'nebra-lang';
+const GITHUB_REPO = 'nebra';
+const SITE_REPO = 'nebra-lang.github.io';
 const VSCODE_MARKETPLACE =
-  'https://marketplace.visualstudio.com/items?itemName=DasDarki.lux-lang';
+  'https://marketplace.visualstudio.com/items?itemName=DasDarki.neb-lang';
 
 const config: Config = {
-  title: 'Lux',
+  title: 'Nebra',
   tagline: 'A typed superset of Lua that transpiles to clean, portable Lua',
   favicon: 'img/favicon.ico',
 
-  url: 'https://lualux.github.io',
+  url: 'https://nebra-lang.github.io',
   baseUrl: '/',
 
   organizationName: GITHUB_ORG,
@@ -85,7 +85,7 @@ const config: Config = {
       {
         name: 'keywords',
         content:
-          'lua, lux, typed lua, lua transpiler, luajit, static types, lua language server',
+          'lua, nebra, typed lua, lua transpiler, luajit, static types, lua language server',
       },
     ],
 
@@ -96,9 +96,9 @@ const config: Config = {
     },
 
     navbar: {
-      title: 'Lux',
+      title: 'Nebra',
       logo: {
-        alt: 'Lux logo',
+        alt: 'Nebra logo',
         src: 'img/logo.png',
       },
       hideOnScroll: false,
@@ -149,7 +149,7 @@ const config: Config = {
           title: 'Reference',
           items: [
             {label: 'CLI reference', to: '/docs/toolchain/cli'},
-            {label: 'lux.toml', to: '/docs/advanced/configuration'},
+            {label: 'nebra.toml', to: '/docs/advanced/configuration'},
             {label: 'Package manager', to: '/docs/toolchain/package-manager'},
             {label: 'Declaration files', to: '/docs/language/declarations'},
           ],
@@ -173,7 +173,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Lux is MIT licensed. Copyright &copy; ${new Date().getFullYear()} the Lux contributors.`,
+      copyright: `Nebra is MIT licensed. Copyright &copy; ${new Date().getFullYear()} the Nebra contributors.`,
     },
 
     docs: {

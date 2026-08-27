@@ -1,28 +1,28 @@
 ---
 sidebar_position: 3
 title: "Testing"
-description: "Writing tests with the built-in lux:test framework and running them with lux test."
+description: "Writing tests with the built-in nebra:test framework and running them with nebra test."
 ---
 
 # Testing
 
-Lux ships with a built-in test framework as the module `lux:test`, plus the `lux test` CLI command for discovery, execution, and reporting. No external testing library required.
+Nebra ships with a built-in test framework as the module `nebra:test`, plus the `nebra test` CLI command for discovery, execution, and reporting. No external testing library required.
 
 ```bash
-lux test                  # run every discovered test
-lux test "math"           # only tests whose full name contains "math"
-lux test --quiet           # suppress per-test output
+nebra test                  # run every discovered test
+nebra test "math"           # only tests whose full name contains "math"
+nebra test --quiet           # suppress per-test output
 ```
 
 ---
 
 ## Writing tests
 
-A test file is any `.lux` source that calls `test(...)` (and optionally `describe(...)`) at the top level. The framework is imported from the magic module `"lux:test"`:
+A test file is any `.neb` source that calls `test(...)` (and optionally `describe(...)`) at the top level. The framework is imported from the magic module `"nebra:test"`:
 
 ```lua
--- tests/math_test.lux
-import { describe, test, expect } from "lux:test"
+-- tests/math_test.neb
+import { describe, test, expect } from "nebra:test"
 
 describe("Math operations", function(): nil
     test("addition", function(): nil
@@ -43,7 +43,7 @@ test("standalone test", function(): nil
 end)
 ```
 
-The `lux:test` module is resolved by the runtime - the consuming code doesn't need any `.lua` files on disk for it. At runtime, `lux test` injects the implementation into `package.preload["lux:test"]` before each test file is loaded.
+The `nebra:test` module is resolved by the runtime - the consuming code doesn't need any `.lua` files on disk for it. At runtime, `nebra test` injects the implementation into `package.preload["nebra:test"]` before each test file is loaded.
 
 ---
 
@@ -91,40 +91,40 @@ A failed assertion raises an error that the runner catches per-test; subsequent 
 
 ## Discovery rules
 
-`lux test` discovers test files using two complementary mechanisms (both configurable in `lux.toml`):
+`nebra test` discovers test files using two complementary mechanisms (both configurable in `nebra.toml`):
 
 ```toml
 [test]
 dirs = ["tests", "test"]       # walked recursively
-patterns = ["_test.lux", ".test.lux"]
+patterns = ["_test.neb", ".test.neb"]
 quiet = false
 ```
 
-- Any `.lux` file inside one of `[test].dirs` is a test file.
-- Any `.lux` file (anywhere under `[source]`) whose filename ends with one of `[test].patterns` is a test file.
+- Any `.neb` file inside one of `[test].dirs` is a test file.
+- Any `.neb` file (anywhere under `[source]`) whose filename ends with one of `[test].patterns` is a test file.
 
 ```
 src/
-├-- main.lux                ← regular source
-├-- math.lux                ← regular source
-└-- math_test.lux           ← test (suffix match)
+├-- main.neb                ← regular source
+├-- math.neb                ← regular source
+└-- math_test.neb           ← test (suffix match)
 tests/
-├-- integration_test.lux    ← test (in tests/ dir)
-└-- api/v2_test.lux         ← test (recursive in tests/)
+├-- integration_test.neb    ← test (in tests/ dir)
+└-- api/v2_test.neb         ← test (recursive in tests/)
 ```
 
-`.d.lux` files are always excluded.
+`.d.neb` files are always excluded.
 
 ---
 
 ## Filtering
 
-The positional argument to `lux test` filters tests by their **full name** (substring match):
+The positional argument to `nebra test` filters tests by their **full name** (substring match):
 
 ```bash
-lux test "Math > addition"      # exact dot-separated path
-lux test "Math"                 # any test inside a Math describe block
-lux test addition               # any test whose name contains "addition"
+nebra test "Math > addition"      # exact dot-separated path
+nebra test "Math"                 # any test inside a Math describe block
+nebra test addition               # any test whose name contains "addition"
 ```
 
 `describe` groups contribute their name as a prefix; nested groups join with ` > `. So `describe("Math operations", function() test("addition", ...) end)` produces the full name `Math operations > addition`.
@@ -138,7 +138,7 @@ The filter applies after discovery - tests that don't match are silently skipped
 Default output mirrors the structure of the source:
 
 ```
--- /tmp/lux-test-abc123/math_test.lua --
+-- /tmp/nebra-test-abc123/math_test.lua --
 Math operations
   ✓ addition
   ✓ near floats
@@ -158,14 +158,14 @@ Math operations
       expected 2 to be 3
       stack traceback:
           [C]: in function 'error'
-          [string "lux:test"]:142: in method 'toBe'
+          [string "nebra:test"]:142: in method 'toBe'
           .../math_test.lua:9: in function <.../math_test.lua:7>
 
 -----------------------------------------
 ✗ 1 failed, 3 passed (4 total)
 
   • Math operations > subtraction
-    /tmp/lux-test-abc123/math_test.lua
+    /tmp/nebra-test-abc123/math_test.lua
 ```
 
 `--quiet` removes the per-test ticks; the summary at the bottom is always shown.
@@ -179,7 +179,7 @@ Math operations
 | 0    | All discovered tests passed            |
 | 1    | One or more failures, or compile error |
 
-So `lux test` is CI-friendly without further configuration.
+So `nebra test` is CI-friendly without further configuration.
 
 ---
 
@@ -215,13 +215,13 @@ Test-only dependencies belong in `[dev-dependencies]`:
 
 ```toml
 [dev-dependencies]
-test-helpers = "github:DasDarki/lux-test-helpers@v0.3.0"
+test-helpers = "github:DasDarki/nebra-test-helpers@v0.3.0"
 ```
 
-`lux install --no-dev` (used in production CI before a binary build) skips them. `lux install` (default) and `lux test` (which respects `--no-dev`'s absence) include them.
+`nebra install --no-dev` (used in production CI before a binary build) skips them. `nebra install` (default) and `nebra test` (which respects `--no-dev`'s absence) include them.
 
 ---
 
 ## Comparison with the legacy adapter
 
-The repository's [`test/`](https://github.com/LuaLux/lux/tree/master/test) project (164 tests covering the language itself) uses a thin adapter (`test/src/_runner.lux`) that re-exports `section / expect / expectEq / ...` on top of `lux:test`. This was kept for source compatibility while the legacy `run()`-per-file structure was migrated. New code should use `lux:test` directly.
+The repository's [`test/`](https://github.com/nebra-lang/nebra/tree/master/test) project (164 tests covering the language itself) uses a thin adapter (`test/src/_runner.neb`) that re-exports `section / expect / expectEq / ...` on top of `nebra:test`. This was kept for source compatibility while the legacy `run()`-per-file structure was migrated. New code should use `nebra:test` directly.

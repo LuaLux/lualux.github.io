@@ -1,16 +1,16 @@
 ---
 sidebar_position: 6
 title: "Doc Comments"
-description: "LuaCATS-style doc comments and generating a documentation site with lux docs."
+description: "LuaCATS-style doc comments and generating a documentation site with nebra docs."
 ---
 
 # Doc Comments
 
-Lux's documentation syntax is **LuaCATS-compatible**: triple-dash line comments (`---`) and tag-prefixed lines like `---@param`, `---@return`. The same comments serve three purposes:
+Nebra's documentation syntax is **LuaCATS-compatible**: triple-dash line comments (`---`) and tag-prefixed lines like `---@param`, `---@return`. The same comments serve three purposes:
 
 1. **LSP hover** - your editor shows the comment when you hover a symbol.
-2. **`.d.lux` generation** - comments propagate into the generated declaration file when `generate_declarations = true`.
-3. **Doc site generation** - `lux docs` reads them to produce Markdown + an HTML site for your project's public API.
+2. **`.d.neb` generation** - comments propagate into the generated declaration file when `generate_declarations = true`.
+3. **Doc site generation** - `nebra docs` reads them to produce Markdown + an HTML site for your project's public API.
 
 ```lua
 --- Returns a greeting for the given name.
@@ -130,15 +130,15 @@ Markdown formatting (headings, code fences, lists) is preserved in the generated
 ## Generating documentation
 
 ```bash
-lux docs                      # → docs/<module>.md + docs/index.html
-lux docs --out site/api       # custom output
-lux docs --no-html            # markdown only
-lux docs --no-md              # html only
+nebra docs                      # → docs/<module>.md + docs/index.html
+nebra docs --out site/api       # custom output
+nebra docs --no-html            # markdown only
+nebra docs --no-md              # html only
 ```
 
 The generator:
 
-1. Compiles the project (the same pipeline as `lux build`, but with docs collected as a side effect).
+1. Compiles the project (the same pipeline as `nebra build`, but with docs collected as a side effect).
 2. For every exported declaration with a doc comment, emits a section in `<module>.md`.
 3. For HTML: builds an index page with a sidebar (one entry per module), plus one HTML file per module. Markdown is rendered to HTML using a built-in renderer (no external Pandoc or Marked needed).
 
@@ -156,12 +156,12 @@ The generated site is a static directory you can drop into GitHub Pages, Netlify
 
 ---
 
-## Doc comments survive into `.d.lux`
+## Doc comments survive into `.d.neb`
 
-When `generate_declarations = true` (the default), the compiler emits a `<name>.d.lux` next to your output that other Lux projects can `import` from. **Doc comments are preserved** on every declaration in the emitted file:
+When `generate_declarations = true` (the default), the compiler emits a `<name>.d.neb` next to your output that other Nebra projects can `import` from. **Doc comments are preserved** on every declaration in the emitted file:
 
 ```lua
--- generated: my-lib/index.d.lux
+-- generated: my-lib/index.d.neb
 declare module "my-lib"
     --- Returns the absolute value.
     ---

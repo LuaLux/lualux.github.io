@@ -6,27 +6,27 @@ description: "Table constructors, named-function fields, type annotations and th
 
 # Tables
 
-Tables are Lua's only data structure. Lux supports all Lua table syntax with optional type annotations.
+Tables are Lua's only data structure. Nebra supports all Lua table syntax with optional type annotations.
 
 ## Table Constructors
 
 ### Array-Style
 
-```lux
+```nebra
 local arr = {1, 2, 3, 4, 5}
 local names: string[] = {"Alice", "Bob", "Charlie"}
 ```
 
 ### Record-Style
 
-```lux
+```nebra
 local point = {x = 10, y = 20}
 local config: {[string]: any} = {host = "localhost", port = 8080}
 ```
 
 ### Bracket Keys
 
-```lux
+```nebra
 local map = {
     ["key with spaces"] = 1,
     [42] = "number key",
@@ -36,7 +36,7 @@ local map = {
 
 ### Mixed
 
-```lux
+```nebra
 local mixed = {
     1, 2, 3,              -- positional
     name = "test",          -- named
@@ -49,7 +49,7 @@ local mixed = {
 A field may be written as a named function. It is shorthand for the `name = function ... end` form
 and produces the same string key:
 
-```lux
+```nebra
 local ops = {
     function add(a: number, b: number): number
         return a + b
@@ -72,7 +72,7 @@ local ops = {
 
 `async` works the same way:
 
-```lux
+```nebra
 local io = {
     async function read(path: string): string
         return await fs.readFile(path)
@@ -83,7 +83,7 @@ local io = {
 The shorthand needs an identifier after `function`. A `function` followed by `(` is still an
 anonymous function and still takes an integer key, so both forms mix freely:
 
-```lux
+```nebra
 local handlers = {
     function onStart() print "start" end,   -- key "onStart"
     function() print "anonymous" end,        -- key 1
@@ -97,7 +97,7 @@ allowed. Integer and computed keys still need the bracket form (`[1] = function(
 There is no `function t:method() end` form inside a table constructor. Write the `self` parameter
 out when you want the field to be callable with `:`:
 
-```lux
+```nebra
 local counter = {
     total = 0,
     function bump(self: any, by: number): number
@@ -112,7 +112,7 @@ counter:bump(3)
 Calling a table field with `:` when it has no `self` parameter is a warning, because Lua passes the
 receiver anyway and every declared parameter ends up shifted by one:
 
-```lux
+```nebra
 local t = { function greet(name: string) print(name) end }
 t:greet("world")    -- warning: 'greet' declares no 'self' parameter
 t.greet("world")    -- fine
@@ -120,7 +120,7 @@ t.greet("world")    -- fine
 
 ### Empty Table
 
-```lux
+```nebra
 local empty = {}
 local typed: number[] = {}
 local map: {[string]: number} = {}
@@ -130,14 +130,14 @@ local map: {[string]: number} = {}
 
 Both `,` and `;` are valid separators. Trailing separator is allowed:
 
-```lux
+```nebra
 local a = {1, 2, 3,}
 local b = {x = 1; y = 2; z = 3;}
 ```
 
 ## Type Annotations on Tables
 
-```lux
+```nebra
 -- Typed as array
 local nums: number[] = {1, 2, 3}
 
@@ -152,7 +152,7 @@ local user: {name: string, age: number} = {name = "Alice", age = 30}
 
 With `index_base = 0` in config, array indices are adjusted from 0-based to Lua's 1-based:
 
-```lux
+```nebra
 local arr = {10, 20, 30}
 print(arr[0])    -- compiles to arr[1], prints 10
 print(arr[1])    -- compiles to arr[2], prints 20

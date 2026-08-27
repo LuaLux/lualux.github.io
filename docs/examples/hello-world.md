@@ -1,17 +1,17 @@
 ---
 sidebar_position: 2
 title: "Hello, Typed World"
-description: "The smallest useful Lux program: type annotations, doc comments, nil handling and what the compiler strips from the output."
+description: "The smallest useful Nebra program: type annotations, doc comments, nil handling and what the compiler strips from the output."
 ---
 
 # Hello, Typed World
 
 This is the shortest example that shows something Lua cannot do on its own. It is a single file, it
-runs with `lux run`, and every line of it has a reason to exist.
+runs with `nebra run`, and every line of it has a reason to exist.
 
 ## The program
 
-```lux title="src/main.lux"
+```nebra title="src/main.neb"
 --- Formats a person's display name.
 ---
 --- Falls back to a placeholder when no name was supplied, so the caller never
@@ -38,7 +38,7 @@ greetAll({ "Ada", "  Grace  ", "", "Alan" })
 ```
 
 ```bash
-lux run
+nebra run
 ```
 
 ```
@@ -57,7 +57,7 @@ Hello, Alan!
 is not, which is exactly the shape `string.gsub` wants.
 
 **`local trimmed: string, replacements: number = string.gsub(...)`** destructures a multi-return.
-`string.gsub` returns the new string *and* a replacement count, and Lux knows that from its stdlib
+`string.gsub` returns the new string *and* a replacement count, and Nebra knows that from its stdlib
 declaration. Writing `local trimmed: string = string.gsub(...)` is an error, because the value on
 the right is a `(string, number)` tuple and not a `string`. Lua would have silently discarded the
 second value. Here you have to acknowledge it.
@@ -70,7 +70,7 @@ left to right.
 alias for the same thing that reads better when you mean "no result" rather than "the nil value".
 
 **The `---` comments** are doc comments in LuaCATS style. They show up on hover in the editor and
-feed [`lux docs`](../toolchain/doc-comments.md). Ordinary `--` comments do not.
+feed [`nebra docs`](../toolchain/doc-comments.md). Ordinary `--` comments do not.
 
 ## What the compiler emits
 
@@ -105,17 +105,17 @@ deliberate: it evaluates the left side exactly once, which the usual `a and b or
 guarantee when the left side is `false`.
 
 :::note
-This output was produced with `[reflection] mode = "none"` in `lux.toml`. Reflection metadata is
+This output was produced with `[reflection] mode = "none"` in `nebra.toml`. Reflection metadata is
 emitted by default, which adds a registry block at the top of the file. See
 [Reflection](../advanced/reflection.md) for what it is and when you want it.
 :::
 
 ## A method-call gotcha
 
-Lua lets you write `("  x  "):gsub(...)` because strings carry a metatable. Lux does not model that
+Lua lets you write `("  x  "):gsub(...)` because strings carry a metatable. Nebra does not model that
 out of the box, so this is an error:
 
-```lux
+```nebra
 local upper: string = string.upper(s)   -- correct
 local upper: string = s:upper()         -- error: type 'string' has no method 'upper'
 ```
@@ -125,9 +125,9 @@ Call the library function directly, or add the method yourself with an
 
 ## Turning the safety up
 
-Add this to `lux.toml`:
+Add this to `nebra.toml`:
 
-```toml title="lux.toml"
+```toml title="nebra.toml"
 [rules]
 strict_nil = true
 ```
@@ -140,7 +140,7 @@ error[E2006]: Expression of type 'string | nil' is possibly nil. Use '?.' to acc
 ```
 
 Strict-nil mode is off by default so that existing Lua compiles unchanged. Turning it on is the
-single highest-value flag in `lux.toml` for a codebase you intend to maintain.
+single highest-value flag in `nebra.toml` for a codebase you intend to maintain.
 
 ## Next
 

@@ -8,7 +8,7 @@ description: "Named, local and anonymous functions, default parameters, varargs,
 
 ## Named Functions
 
-```lux
+```nebra
 function add(a: number, b: number): number
     return a + b
 end
@@ -16,7 +16,7 @@ end
 
 ## Local Functions
 
-```lux
+```nebra
 local function multiply(x: number, y: number): number
     return x * y
 end
@@ -24,7 +24,7 @@ end
 
 ## Method Syntax
 
-```lux
+```nebra
 function obj:method(x: number): string
     return tostring(x)
 end
@@ -32,7 +32,7 @@ end
 
 ## Anonymous Functions
 
-```lux
+```nebra
 local square = function(x: number): number
     return x * x
 end
@@ -43,13 +43,13 @@ table.sort(items, function(a, b) return a < b end)
 Inside a table constructor a function field may carry its name directly - see
 [Named Functions in tables](./tables.md#named-functions):
 
-```lux
+```nebra
 local ops = { function add(a: number, b: number): number return a + b end }
 ```
 
 ## Default Parameters
 
-```lux
+```nebra
 function greet(name: string, greeting: string = "Hello"): string
     return greeting .. ", " .. name
 end
@@ -64,7 +64,7 @@ Default parameters compile to `if param == nil then param = default end` checks 
 
 ### Standard Varargs
 
-```lux
+```nebra
 function printf(fmt: string, ...)
     print(string.format(fmt, ...))
 end
@@ -74,7 +74,7 @@ end
 
 Give a name and type to the variadic parameter:
 
-```lux
+```nebra
 function sum(...values: number): number
     local total = 0
     for _, v in ipairs({...}) do
@@ -88,7 +88,7 @@ end
 
 Multiple functions with the same name but different parameter counts:
 
-```lux
+```nebra
 function format(x: number): string
     return tostring(x)
 end
@@ -105,7 +105,7 @@ The compiler generates a single dispatch function that selects the right impleme
 
 ## Multi-Return
 
-```lux
+```nebra
 function divide(a: number, b: number): (number, number)
     return math.floor(a / b), a % b
 end
@@ -115,7 +115,7 @@ local quotient, remainder = divide(10, 3)
 
 ## Return Statement
 
-```lux
+```nebra
 function getValue(): number
     return 42
 end

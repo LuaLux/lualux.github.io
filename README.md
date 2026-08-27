@@ -1,9 +1,9 @@
-# lualux.github.io
+# nebra-lang.github.io
 
-The documentation site for [Lux](https://github.com/LuaLux/lux), a typed superset of Lua.
+The documentation site for [Nebra](https://github.com/nebra-lang/nebra), a typed superset of Lua.
 
 Built with [Docusaurus](https://docusaurus.io/) and published to GitHub Pages at
-<https://lualux.github.io>.
+<https://nebra-lang.github.io>.
 
 ## Local development
 
@@ -44,10 +44,10 @@ docs/                       # all documentation content
 ├── advanced/               # config reference, annotations, sides, reflection
 └── examples/               # complete, runnable programs
 src/
-├── css/custom.css          # the theme, palette sampled from the Lux logo
+├── css/custom.css          # the theme, palette sampled from the Nebra logo
 ├── pages/index.tsx         # the marketing landing page
 └── theme/
-    └── prism-include-languages.js   # the Lux syntax-highlighting grammar
+    └── prism-include-languages.js   # the Nebra syntax-highlighting grammar
 static/img/                 # logo, favicon, social card
 ```
 
@@ -73,7 +73,7 @@ the sidebar, and renders the body heading as the page title.
 **Links between pages** are relative markdown paths, for example `../language/types.md`. The build
 verifies them.
 
-**Code blocks** use `lux` for Lux source and `lua` for compiled output or plain Lua. The Lux grammar
+**Code blocks** use `nebra` for Nebra source and `lua` for compiled output or plain Lua. The Nebra grammar
 lives in `src/theme/prism-include-languages.js`.
 
 **House style**: no em dashes anywhere. Use a hyphen with spaces around it instead.

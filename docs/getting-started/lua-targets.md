@@ -1,16 +1,16 @@
 ---
 sidebar_position: 5
 title: "Lua Targets"
-description: "Which Lua dialect the compiler emits, what each version supports natively, and what Lux polyfills for you."
+description: "Which Lua dialect the compiler emits, what each version supports natively, and what Nebra polyfills for you."
 ---
 
 # Lua Targets
 
-One Lux codebase can compile for five different Lua runtimes. You pick the target once in
-`lux.toml` and the compiler adapts its output, emitting native syntax where the runtime has it and a
+One Nebra codebase can compile for five different Lua runtimes. You pick the target once in
+`nebra.toml` and the compiler adapts its output, emitting native syntax where the runtime has it and a
 polyfill where it does not.
 
-```toml title="lux.toml"
+```toml title="nebra.toml"
 target = "5.4"   # 5.1, 5.2, 5.3, 5.4, jit
 ```
 
@@ -18,7 +18,7 @@ If you leave `target` out, the compiler defaults to `5.4`.
 
 ## Feature matrix
 
-This is what each runtime provides on its own. Anything marked "polyfilled" still works in your Lux
+This is what each runtime provides on its own. Anything marked "polyfilled" still works in your Nebra
 source, it just compiles to different Lua.
 
 | Feature | Lua 5.1 | Lua 5.2 | Lua 5.3 | Lua 5.4 | LuaJIT |
@@ -31,7 +31,7 @@ source, it just compiles to different Lua.
 | `<close>` locals | polyfilled | polyfilled | polyfilled | native | polyfilled |
 | `table.unpack` | `unpack` | native | native | native | `unpack` |
 
-`continue` does not exist in any Lua version. Lux always lowers it, using `goto` on runtimes that
+`continue` does not exist in any Lua version. Nebra always lowers it, using `goto` on runtimes that
 have it and a restructured loop on Lua 5.1.
 
 ## What polyfilling looks like
@@ -40,7 +40,7 @@ The compiler never asks you to write different code per target. It rewrites at c
 
 Floor division on a runtime without `//`:
 
-```lux title="source"
+```nebra title="source"
 local half = total // 2
 ```
 
@@ -50,7 +50,7 @@ local half = math.floor(total / 2)
 
 Bitwise operations on LuaJIT, which has the `bit` library rather than operators:
 
-```lux title="source"
+```nebra title="source"
 local masked = flags & 0xFF
 ```
 
@@ -60,7 +60,7 @@ local masked = bit.band(flags, 0xFF)
 
 `continue` on Lua 5.1, which has neither `continue` nor `goto`:
 
-```lux title="source"
+```nebra title="source"
 for _, v in ipairs(items) do
     if v == nil then continue end
     process(v)
@@ -86,7 +86,7 @@ LuaJIT tracks Lua 5.1 semantics with extensions, so it has `goto` and bitwise op
 floor division operator and no integer subtype.
 
 **`5.1`** is the safest choice for maximum compatibility. Many embedded hosts, game engines and
-older frameworks are still on 5.1 or on a 5.1-compatible fork. Everything in Lux works here, it just
+older frameworks are still on 5.1 or on a 5.1-compatible fork. Everything in Nebra works here, it just
 produces slightly more verbose output for the newer operators.
 
 **`5.2`** and **`5.3`** are for hosts that pin those specific versions.
@@ -99,7 +99,7 @@ output runs everywhere, including on 5.4.
 Lua 5.3 and 5.4 distinguish integers from floats. Lua 5.1, 5.2 and LuaJIT do not: every number is a
 double.
 
-Lux does not model this distinction in its type system. `number` is a single type covering both, and
+Nebra does not model this distinction in its type system. `number` is a single type covering both, and
 the runtime decides. This is deliberate, because it keeps the same source compiling for every
 target. If your program depends on integer overflow behaviour or on `math.type`, it is only portable
 across the runtimes that agree on it.
@@ -109,7 +109,7 @@ across the runtimes that agree on it.
 The compiler will not stop you from reading what it produced, and you should:
 
 ```bash
-lux build
+nebra build
 cat out/main.lua
 ```
 
@@ -117,14 +117,14 @@ To check a target actually runs on the real interpreter rather than the embedded
 then invoke that interpreter directly:
 
 ```bash
-lux build
+nebra build
 lua5.1 out/main.lua
 luajit out/main.lua
 ```
 
 ## Related
 
-- [Project configuration](./project-configuration.md) covers the rest of `lux.toml`.
+- [Project configuration](./project-configuration.md) covers the rest of `nebra.toml`.
 - The [full configuration reference](../advanced/configuration.md) documents every key, including
   the `[code]` section that changes indexing and operator behaviour.
 - [Native binaries](../toolchain/native-binaries.md) bundles a project plus a runtime into a single

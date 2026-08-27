@@ -6,13 +6,13 @@ description: "Strict-nil mode, nil coalescing, the non-nil assertion, optional c
 
 # Nilability & Optionals
 
-Lux tracks nullability in its type system and provides operators for safe nil handling.
+Nebra tracks nullability in its type system and provides operators for safe nil handling.
 
 ## Nullable Types
 
 Append `?` to a type to allow nil:
 
-```lux
+```nebra
 local name: string? = nil        -- OK
 local count: number = nil         -- ERROR: number is not nullable
 ```
@@ -21,7 +21,7 @@ local count: number = nil         -- ERROR: number is not nullable
 
 With `strict_nil = true` in config, the compiler requires explicit handling of nullable values before using them as non-nil:
 
-```lux
+```nebra
 local name: string? = getName()
 print(name)           -- WARNING: name might be nil
 if name ~= nil then
@@ -33,7 +33,7 @@ end
 
 Assert that a value is not nil. The type checker treats the result as non-nullable:
 
-```lux
+```nebra
 local name: string? = getName()
 local safe: string = name!        -- assert non-nil
 print(name!)                      -- use inline
@@ -45,7 +45,7 @@ This is a compile-time assertion only. No runtime code is emitted. If the value 
 
 Access fields on a potentially nil object. Returns nil if the object is nil:
 
-```lux
+```nebra
 local city = user?.address?.city
 ```
 
@@ -68,7 +68,7 @@ end
 
 Call a function only if it's not nil:
 
-```lux
+```nebra
 local result = callback?()
 local value = obj?.method?()
 ```
@@ -77,7 +77,7 @@ local value = obj?.method?()
 
 Provide a default value when an expression is nil:
 
-```lux
+```nebra
 local name = user?.name ?? "Anonymous"
 local port = config.port ?? 8080
 local list = getData() ?? {}
@@ -89,7 +89,7 @@ Right-associative: `a ?? b ?? c` means `a ?? (b ?? c)`.
 
 The type checker narrows types based on nil checks:
 
-```lux
+```nebra
 local x: string? = getInput()
 
 if x ~= nil then
@@ -107,7 +107,7 @@ end
 A guard branch counts as taken care of when it exits by any means - `return`, `break`, or a call to
 a function that returns [`never`](./types.md#the-never-type):
 
-```lux
+```nebra
 local y: string? = getInput()
 
 if y == nil then
@@ -120,7 +120,7 @@ local z: string = getInput() or error("no input")
 
 The narrowing lasts until the variable is assigned again, which restores its declared type:
 
-```lux
+```nebra
 if y == nil then return end
 -- y: string
 y = nil                 -- allowed: the assignment ends the narrowing

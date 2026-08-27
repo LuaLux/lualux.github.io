@@ -62,7 +62,7 @@ description: "Arithmetic, comparison, logical, bitwise, increment and decrement,
 
 When `alt_boolean_operators = true` in config:
 
-```lux
+```nebra
 a && b        -- same as: a and b
 a || b        -- same as: a or b
 !a            -- same as: not a
@@ -73,9 +73,9 @@ These compile directly to their Lua equivalents.
 
 ## Increment / Decrement
 
-Lux adds C-style increment and decrement operators. Because `--` is a Lua comment, decrement uses `~~` instead:
+Nebra adds C-style increment and decrement operators. Because `--` is a Lua comment, decrement uses `~~` instead:
 
-```lux
+```nebra
 x++           -- post-increment (returns old value)
 ++x           -- pre-increment (returns new value)
 x~~           -- post-decrement (returns old value)
@@ -84,7 +84,7 @@ x~~           -- post-decrement (returns old value)
 
 Works on any l-value:
 
-```lux
+```nebra
 arr[i]++
 obj.count~~
 ++matrix[x][y]
@@ -103,7 +103,7 @@ x = x + 1                        -- returns x
 
 Returns the left operand if it is not nil, otherwise the right operand:
 
-```lux
+```nebra
 local name = user?.name ?? "Anonymous"
 local port = config.port ?? 8080
 ```
@@ -114,7 +114,7 @@ Compiles to: `(function() local __v = left; if __v ~= nil then return __v end re
 
 Asserts that a value is not nil. The type checker treats the result as non-nullable:
 
-```lux
+```nebra
 local name: string? = getName()
 print(name!)                   -- type: string (not string?)
 ```
@@ -125,7 +125,7 @@ The `!` postfix operator is a compile-time assertion. No runtime code is emitted
 
 Safely access fields on a potentially nil value:
 
-```lux
+```nebra
 local value = obj?.field       -- nil if obj is nil
 local nested = a?.b?.c         -- chains safely
 ```
@@ -134,7 +134,7 @@ local nested = a?.b?.c         -- chains safely
 
 Safely call a potentially nil function:
 
-```lux
+```nebra
 local result = callback?()     -- nil if callback is nil
 ```
 
@@ -142,7 +142,7 @@ local result = callback?()     -- nil if callback is nil
 
 Runtime type check:
 
-```lux
+```nebra
 if x is number then
     print(x + 1)
 end
@@ -154,7 +154,7 @@ See [Types](./types.md) for details.
 
 Compile-time type assertion (no runtime effect):
 
-```lux
+```nebra
 local n = value as number
 ```
 
@@ -180,7 +180,7 @@ local n = value as number
 
 With `concat_operator = "+"` in config, the `+` operator can be used for string concatenation:
 
-```lux
+```nebra
 local msg = "Hello" + " " + "World"  -- compiles to .. in Lua
 ```
 
@@ -190,7 +190,7 @@ local msg = "Hello" + " " + "World"  -- compiles to .. in Lua
 
 Returns a string describing the runtime type of a value. For classes and enums the returned string is the declared name; for primitives it matches Lua's `type()` result.
 
-```lux
+```nebra
 typeof 42            -- "number"
 typeof "hi"          -- "string"
 typeof myDog         -- "Dog"
@@ -203,7 +203,7 @@ When the static type is known at compile time (class or enum), the name is inlin
 
 Runtime check whether a value is an instance of the given class (including subclasses).
 
-```lux
+```nebra
 if pet instanceof Dog then
     pet:bark()
 end

@@ -6,11 +6,11 @@ description: "match statements and expressions, value, type and wildcard pattern
 
 # Pattern Matching
 
-Lux provides `match` for pattern matching on values.
+Nebra provides `match` for pattern matching on values.
 
 ## Match Statement
 
-```lux
+```nebra
 match status
 case "ok" then
     print("Success")
@@ -27,7 +27,7 @@ Compiles to an if/elseif/else chain.
 
 Match against specific values using `==`:
 
-```lux
+```nebra
 match x
 case 1 then
     print("one")
@@ -44,7 +44,7 @@ end
 
 `_` matches anything (catch-all):
 
-```lux
+```nebra
 match value
 case _ then
     print("always matches")
@@ -55,7 +55,7 @@ end
 
 Bind a name to the matched value with a type check:
 
-```lux
+```nebra
 match value
 case s: string then
     print("String: " .. s)
@@ -72,7 +72,7 @@ This checks `type(value) == "string"` and binds `s = value` in the arm body.
 
 Add an additional condition with `when`:
 
-```lux
+```nebra
 match x
 case n: number when n > 0 then
     print("Positive: " .. n)
@@ -89,7 +89,7 @@ end
 
 `match` can be used as an expression that returns a value:
 
-```lux
+```nebra
 local label = match code
     case 200 then "OK"
     case 404 then "Not Found"
@@ -102,7 +102,7 @@ Match expressions also support guards and type bindings.
 
 ## Exhaustive Matching
 
-Configure exhaustive matching in `lux.toml`:
+Configure exhaustive matching in `nebra.toml`:
 
 ```toml
 [rules]
@@ -115,7 +115,7 @@ exhaustive_match = "explicit"  # none, relaxed, explicit
 
 ## Enum Matching
 
-```lux
+```nebra
 enum Direction
     North
     South

@@ -7,14 +7,14 @@ import Tabs from '@theme/Tabs';
 import type {ReactNode} from 'react';
 
 const VSCODE_MARKETPLACE =
-  'https://marketplace.visualstudio.com/items?itemName=DasDarki.lux-lang';
+  'https://marketplace.visualstudio.com/items?itemName=DasDarki.neb-lang';
 
 const INSTALL_BASH =
-  'curl -fsSL https://raw.githubusercontent.com/LuaLux/lux/master/scripts/install.sh | bash';
+  'curl -fsSL https://raw.githubusercontent.com/nebra-lang/nebra/master/scripts/install.sh | bash';
 const INSTALL_FISH =
-  'curl -fsSL https://raw.githubusercontent.com/LuaLux/lux/master/scripts/install.fish | fish';
+  'curl -fsSL https://raw.githubusercontent.com/nebra-lang/nebra/master/scripts/install.fish | fish';
 const INSTALL_PWSH =
-  'irm https://raw.githubusercontent.com/LuaLux/lux/master/scripts/install.ps1 | iex';
+  'irm https://raw.githubusercontent.com/nebra-lang/nebra/master/scripts/install.ps1 | iex';
 
 const SAMPLE = `--- A counter that never leaves its range.
 class Counter
@@ -76,7 +76,7 @@ type Feature = {
 const FEATURES: Feature[] = [
   {
     title: 'Types are optional',
-    body: 'Every valid Lua program is already a valid Lux program. Add annotations where they pay off and leave the rest untyped. Nothing about the type system reaches the generated Lua.',
+    body: 'Every valid Lua program is already a valid Nebra program. Add annotations where they pay off and leave the rest untyped. Nothing about the type system reaches the generated Lua.',
     to: '/docs/language/types',
   },
   {
@@ -86,7 +86,7 @@ const FEATURES: Feature[] = [
   },
   {
     title: 'Targets 5.1 through 5.4 and LuaJIT',
-    body: 'Pick your target in lux.toml and the compiler emits idiomatic Lua for it, polyfilling newer operators such as floor division and bitwise ops on older runtimes.',
+    body: 'Pick your target in nebra.toml and the compiler emits idiomatic Lua for it, polyfilling newer operators such as floor division and bitwise ops on older runtimes.',
     to: '/docs/getting-started/lua-targets',
   },
   {
@@ -108,26 +108,26 @@ const FEATURES: Feature[] = [
 
 function Hero(): ReactNode {
   return (
-    <header className="lux-hero">
-      <div className="container lux-hero__inner">
+    <header className="nebra-hero">
+      <div className="container nebra-hero__inner">
         <img
-          className="lux-hero__logo"
+          className="nebra-hero__logo"
           src={useBaseUrl('/img/logo.png')}
-          alt="Lux logo"
+          alt="Nebra logo"
           width={512}
           height={506}
         />
-        <h1 className="lux-hero__title">Lux</h1>
-        <p className="lux-hero__tagline">
+        <h1 className="nebra-hero__title">Nebra</h1>
+        <p className="nebra-hero__tagline">
           A typed superset of Lua. Classes, generics, pattern matching,
           async/await, modules and a package manager, all compiled away into
           clean, portable Lua.
         </p>
-        <div className="lux-hero__buttons">
+        <div className="nebra-hero__buttons">
           <Link
             className="button button--primary button--lg"
             to="/docs/getting-started/installation">
-            Install Lux
+            Install Nebra
           </Link>
           <Link
             className="button button--secondary button--lg"
@@ -136,15 +136,15 @@ function Hero(): ReactNode {
           </Link>
           <Link
             className="button button--secondary button--lg"
-            href="https://github.com/LuaLux/lux">
+            href="https://github.com/nebra-lang/nebra">
             GitHub
           </Link>
         </div>
-        <div className="lux-hero__badges">
-          <span className="lux-badge">Lua 5.1 to 5.4</span>
-          <span className="lux-badge">LuaJIT</span>
-          <span className="lux-badge">No runtime dependency</span>
-          <span className="lux-badge">MIT licensed</span>
+        <div className="nebra-hero__badges">
+          <span className="nebra-badge">Lua 5.1 to 5.4</span>
+          <span className="nebra-badge">LuaJIT</span>
+          <span className="nebra-badge">No runtime dependency</span>
+          <span className="nebra-badge">MIT licensed</span>
         </div>
       </div>
     </header>
@@ -153,21 +153,21 @@ function Hero(): ReactNode {
 
 function Features(): ReactNode {
   return (
-    <section className="lux-section">
+    <section className="nebra-section">
       <div className="container">
-        <h2 className="lux-section__heading">Why Lux</h2>
-        <p className="lux-section__sub">
+        <h2 className="nebra-section__heading">Why Nebra</h2>
+        <p className="nebra-section__sub">
           Lua is small, fast and embeddable, but large programs in it get hard
-          to hold together. Lux adds the structure without taking you off Lua.
+          to hold together. Nebra adds the structure without taking you off Lua.
         </p>
-        <div className="lux-grid">
+        <div className="nebra-grid">
           {FEATURES.map((feature) => (
             <Link
               key={feature.title}
-              className="lux-card lux-card--link"
+              className="nebra-card nebra-card--link"
               to={feature.to}>
-              <h3 className="lux-card__title">{feature.title}</h3>
-              <p className="lux-card__body">{feature.body}</p>
+              <h3 className="nebra-card__title">{feature.title}</h3>
+              <p className="nebra-card__body">{feature.body}</p>
             </Link>
           ))}
         </div>
@@ -178,22 +178,22 @@ function Features(): ReactNode {
 
 function InputOutput(): ReactNode {
   return (
-    <section className="lux-section lux-section--alt">
+    <section className="nebra-section nebra-section--alt">
       <div className="container">
-        <h2 className="lux-section__heading">What the compiler does</h2>
-        <p className="lux-section__sub">
+        <h2 className="nebra-section__heading">What the compiler does</h2>
+        <p className="nebra-section__sub">
           Types, classes and default parameters exist only while compiling. What
           lands on disk is Lua you would have been happy to write by hand. This
           is real compiler output, with <code>[reflection] mode = "none"</code>
           set so the optional metadata block is left out.
         </p>
-        <div className="lux-split">
+        <div className="nebra-split">
           <div>
-            <div className="lux-split__label">src/counter.lux</div>
-            <CodeBlock language="lux">{SAMPLE}</CodeBlock>
+            <div className="nebra-split__label">src/counter.neb</div>
+            <CodeBlock language="nebra">{SAMPLE}</CodeBlock>
           </div>
           <div>
-            <div className="lux-split__label">out/counter.lua</div>
+            <div className="nebra-split__label">out/counter.lua</div>
             <CodeBlock language="lua">{OUTPUT}</CodeBlock>
           </div>
         </div>
@@ -204,15 +204,15 @@ function InputOutput(): ReactNode {
 
 function Install(): ReactNode {
   return (
-    <section className="lux-section">
+    <section className="nebra-section">
       <div className="container">
-        <h2 className="lux-section__heading">Install in one line</h2>
-        <p className="lux-section__sub">
+        <h2 className="nebra-section__heading">Install in one line</h2>
+        <p className="nebra-section__sub">
           The installer detects your platform, downloads the matching release
-          archive and puts <code>lux</code> on your PATH. No admin rights and no
+          archive and puts <code>nebra</code> on your PATH. No admin rights and no
           .NET or Lua installation required on the target machine.
         </p>
-        <div className="lux-install">
+        <div className="nebra-install">
           <Tabs groupId="os">
             <TabItem value="bash" label="Linux / macOS" default>
               <CodeBlock language="bash">{INSTALL_BASH}</CodeBlock>
@@ -225,7 +225,7 @@ function Install(): ReactNode {
             </TabItem>
           </Tabs>
           <p style={{marginTop: '1.2rem', textAlign: 'center', opacity: 0.85}}>
-            Then open a new shell and run <code>lux version</code>. See the{' '}
+            Then open a new shell and run <code>nebra version</code>. See the{' '}
             <Link to="/docs/getting-started/installation">
               installation guide
             </Link>{' '}
@@ -239,16 +239,16 @@ function Install(): ReactNode {
 
 function Editor(): ReactNode {
   return (
-    <section className="lux-section lux-section--alt">
+    <section className="nebra-section nebra-section--alt">
       <div className="container">
-        <h2 className="lux-section__heading">Editor support</h2>
-        <p className="lux-section__sub">
+        <h2 className="nebra-section__heading">Editor support</h2>
+        <p className="nebra-section__sub">
           The language server ships inside the same binary. The VS Code
           extension launches it for you and gives you diagnostics, hover types,
           completion, go to definition, rename, signature help and semantic
           highlighting.
         </p>
-        <div className="lux-hero__buttons">
+        <div className="nebra-hero__buttons">
           <Link
             className="button button--primary button--lg"
             href={VSCODE_MARKETPLACE}>
@@ -269,7 +269,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title="Typed Lua that compiles to clean Lua"
-      description="Lux is a typed superset of Lua with classes, generics, interfaces, pattern matching, async/await, modules and a package manager. It compiles to idiomatic Lua 5.1 through 5.4 and LuaJIT with zero runtime overhead.">
+      description="Nebra is a typed superset of Lua with classes, generics, interfaces, pattern matching, async/await, modules and a package manager. It compiles to idiomatic Lua 5.1 through 5.4 and LuaJIT with zero runtime overhead.">
       <Hero />
       <main>
         <Features />

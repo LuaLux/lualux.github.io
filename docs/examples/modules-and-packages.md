@@ -6,49 +6,49 @@ description: "Local imports, folder modules, sub-modules and file dependencies, 
 
 # Modules and Packages
 
-Lua has `require` and a search path. Lux keeps that as the runtime mechanism and puts a real module
+Lua has `require` and a search path. Nebra keeps that as the runtime mechanism and puts a real module
 system on top, so imports resolve to files, types flow across the boundary, and unused imports get
 stripped.
 
 This example is the `zoo-app` project from the
-[repository](https://github.com/LuaLux/lux/tree/master/examples), which exists specifically to
+[repository](https://github.com/nebra-lang/nebra/tree/master/examples), which exists specifically to
 exercise every resolution path at once.
 
 ## The shape of it
 
 ```
 examples/
-├── lux-strings/           # a library written in Lux
-│   ├── lux.toml
-│   ├── init.lux           # package root
-│   └── case.lux           # sub-module
+├── nebra-strings/           # a library written in Nebra
+│   ├── nebra.toml
+│   ├── init.neb           # package root
+│   └── case.neb           # sub-module
 ├── lua-math/              # a library written in plain Lua
-│   ├── lux.toml
+│   ├── nebra.toml
 │   ├── init.lua           # the actual implementation
-│   └── init.d.lux         # hand-written types for it
+│   └── init.d.neb         # hand-written types for it
 └── zoo-app/               # the consumer
-    ├── lux.toml
+    ├── nebra.toml
     └── src/
-        ├── main.lux
-        ├── utils.lux      # sibling file
+        ├── main.neb
+        ├── utils.neb      # sibling file
         └── animals/
-            ├── init.lux   # folder module
-            ├── cat.lux    # folder sub-module
-            └── dog.lux
+            ├── init.neb   # folder module
+            ├── cat.neb    # folder sub-module
+            └── dog.neb
 ```
 
 ## Declaring dependencies
 
-```toml title="zoo-app/lux.toml"
+```toml title="zoo-app/nebra.toml"
 name = "zoo-app"
 version = "0.1.0"
 target = "5.4"
 source = "src"
 output = "out"
-entry = "main.lux"
+entry = "main.neb"
 
 [dependencies]
-lux-strings = "file:../lux-strings"
+nebra-strings = "file:../nebra-strings"
 lua-math = "file:../lua-math"
 ```
 
@@ -57,9 +57,9 @@ developing a library and its consumer side by side. Git dependencies use the sam
 different spec, covered in the [package manager guide](../toolchain/package-manager.md).
 
 ```bash
-cd ../lux-strings && lux build    # the Lux library needs its .lua files to exist
-cd ../zoo-app && lux install      # link the deps into lux_modules/
-lux run
+cd ../nebra-strings && nebra build    # the Nebra library needs its .lua files to exist
+cd ../zoo-app && nebra install      # link the deps into nebra_modules/
+nebra run
 ```
 
 ```
@@ -76,9 +76,9 @@ Rex        => woof
 
 ## Every import form in one file
 
-```lux title="src/main.lux"
-import { trim, padLeft, startsWith } from "lux-strings"
-import { capitalize } from "lux-strings/case"
+```nebra title="src/main.neb"
+import { trim, padLeft, startsWith } from "nebra-strings"
+import { capitalize } from "nebra-strings/case"
 import { lerp, clamp, sum, vec2, length2, Vec2 } from "lua-math"
 
 import { formatLabel, padCols } from "utils"
@@ -91,20 +91,20 @@ Each line resolves differently:
 
 | Import | How it resolves |
 |--------|-----------------|
-| `from "lux-strings"` | Package root. Finds `lux_modules/lux-strings/init.lua`, types from the Lux source. |
-| `from "lux-strings/case"` | Sub-module. A file inside the package, addressed with a slash. |
-| `from "lua-math"` | A plain Lua package. Types come from `init.d.lux`, code from `init.lua`. |
-| `from "utils"` | Sibling file `src/utils.lux`. No package-manager wiring needed. |
-| `from "animals"` | Folder module. The directory has an `init.lux`, so that is the entry point. |
+| `from "nebra-strings"` | Package root. Finds `nebra_modules/nebra-strings/init.lua`, types from the Nebra source. |
+| `from "nebra-strings/case"` | Sub-module. A file inside the package, addressed with a slash. |
+| `from "lua-math"` | A plain Lua package. Types come from `init.d.neb`, code from `init.lua`. |
+| `from "utils"` | Sibling file `src/utils.neb`. No package-manager wiring needed. |
+| `from "animals"` | Folder module. The directory has an `init.neb`, so that is the entry point. |
 | `from "animals/cat"` | A file inside a local folder. |
 
-The resolver tries local files first, then `lux_modules`, then the globals declared in `lux.toml`.
+The resolver tries local files first, then `nebra_modules`, then the globals declared in `nebra.toml`.
 
 ## Exporting
 
 Only what you mark with `export` leaves a module:
 
-```lux title="src/utils.lux"
+```nebra title="src/utils.neb"
 --- Joins a label and a value with a colon-arrow separator.
 ---@param label the leading word
 ---@param value the trailing description
@@ -125,10 +125,10 @@ convention of building a table by hand and hoping you remembered everything.
 
 ## Folder modules
 
-A directory with an `init.lux` is importable by the directory name. This is where you put the shared
+A directory with an `init.neb` is importable by the directory name. This is where you put the shared
 types for a group of files:
 
-```lux title="src/animals/init.lux"
+```nebra title="src/animals/init.neb"
 --- Common shape for every species shipped in this subpackage.
 export interface Animal
     name: string
@@ -142,9 +142,9 @@ end
 ```
 
 Files inside the folder import from it by name, and the resolver walks up to the directory and back
-in through `init.lux`:
+in through `init.neb`:
 
-```lux title="src/animals/cat.lux"
+```nebra title="src/animals/cat.neb"
 import { Animal } from "animals"
 
 export class Cat implements Animal
@@ -165,9 +165,9 @@ used only by the type checker, and the compiler drops it from the generated `req
 
 ## Types cross package boundaries
 
-`Vec2` is declared in `lua-math`, a package with no Lux source at all:
+`Vec2` is declared in `lua-math`, a package with no Nebra source at all:
 
-```lux
+```nebra
 declare module "lua-math"
     interface Vec2
         x: number
@@ -181,7 +181,7 @@ end
 
 In `zoo-app`, the round trip stays typed:
 
-```lux
+```nebra
 local origin = vec2(3, 4)
 print("|origin| = " .. tostring(length2(origin)))
 ```
@@ -196,4 +196,4 @@ the value came out of a plain Lua function and goes straight back into another o
   side-effect imports and re-exports.
 - [Package manager](../toolchain/package-manager.md) covers git dependencies, version resolution,
   the lockfile and lifecycle scripts.
-- [Declaration files](../language/declarations.md) explains the `.d.lux` format.
+- [Declaration files](../language/declarations.md) explains the `.d.neb` format.

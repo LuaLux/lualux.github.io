@@ -24,13 +24,13 @@ Interfaces define type contracts. They are compile-time only and emit **no Lua c
 > have implicit self.
 >
 > tl;dr - for now, treat interface method declarations as plain function fields.
-> The dot-vs-colon decision is on you at the call site. A future Lux version may
+> The dot-vs-colon decision is on you at the call site. A future Nebra version may
 > add an explicit `method` keyword to disambiguate "module function" from
 > "instance contract".
 
 ## Defining an Interface
 
-```lux
+```nebra
 interface Printable
     function toString(): string
 end
@@ -46,7 +46,7 @@ end
 
 Interfaces can extend other interfaces:
 
-```lux
+```nebra
 interface Serializable
     function toJson(): string
 end
@@ -61,7 +61,7 @@ end
 
 Classes declare which interfaces they implement:
 
-```lux
+```nebra
 class Document implements Printable, Serializable
     content: string
 
@@ -87,7 +87,7 @@ Error: Class 'Document' does not implement interface member 'save' from 'Storabl
 
 ## Multiple Interfaces
 
-```lux
+```nebra
 class Widget implements Drawable, Printable, Serializable
     -- must implement all methods from all three interfaces
 end
@@ -95,7 +95,7 @@ end
 
 ## Exported Interfaces
 
-```lux
+```nebra
 export interface Plugin
     function init(): void
     function destroy(): void
@@ -109,7 +109,7 @@ An interface method **with a body** is a *default*: implementing classes inherit
 automatically and only need to override it when they want different behavior. Methods
 **without** a body remain abstract and must be implemented.
 
-```lux
+```nebra
 interface Greetable
     name: string
     -- abstract: every implementer must provide this

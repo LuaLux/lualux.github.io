@@ -1,7 +1,7 @@
 ---
 sidebar_position: 5
 title: "Typing Existing Lua"
-description: "Wrap a plain .lua library in a .d.lux declaration so Lux callers get full type checking without rewriting a line of it."
+description: "Wrap a plain .lua library in a .d.neb declaration so Nebra callers get full type checking without rewriting a line of it."
 ---
 
 # Typing Existing Lua
@@ -9,13 +9,13 @@ description: "Wrap a plain .lua library in a .d.lux declaration so Lux callers g
 You almost never start from nothing. There is a Lua library you depend on, or a game engine that
 injects globals into every script, and rewriting it is not on the table.
 
-Declaration files solve this. A `.d.lux` file describes the types of code that already exists. It
+Declaration files solve this. A `.d.neb` file describes the types of code that already exists. It
 generates no output, it is never required at run time, and the implementation stays exactly where it
 was.
 
 ## The library, untouched
 
-This is `examples/lua-math/init.lua`, ordinary Lua with no Lux anywhere in it:
+This is `examples/lua-math/init.lua`, ordinary Lua with no Nebra anywhere in it:
 
 ```lua title="lua-math/init.lua"
 local M = {}
@@ -47,9 +47,9 @@ return M
 
 ## The declaration
 
-Alongside it, `init.d.lux` describes what callers can rely on:
+Alongside it, `init.d.neb` describes what callers can rely on:
 
-```lux title="lua-math/init.d.lux"
+```nebra title="lua-math/init.d.neb"
 declare module "lua-math"
     interface Vec2
         x: number
@@ -85,7 +85,7 @@ resolves to the real `init.lua` at run time.
 
 ## What the caller gets
 
-```lux
+```nebra
 import { lerp, clamp, vec2, length2 } from "lua-math"
 
 local mid: number = lerp(0, 10, 0.25)      -- 2.5
@@ -98,7 +98,7 @@ lerp("zero", 10, 0.25)                      -- error: expected 'number', but got
 local bad: number = origin                  -- error: expected 'number', but got 'Vec2'
 ```
 
-Full checking, hover types, completion and go-to-definition, over a library that has no idea Lux
+Full checking, hover types, completion and go-to-definition, over a library that has no idea Nebra
 exists.
 
 ## The three ways to declare things
@@ -106,9 +106,9 @@ exists.
 ### Globals
 
 For a host environment that injects values into every script, declare them at the top level of a
-`.d.lux` and list the file under `globals` in `lux.toml`:
+`.d.neb` and list the file under `globals` in `nebra.toml`:
 
-```lux title="engine.d.lux"
+```nebra title="engine.d.neb"
 declare _VERSION: string
 declare function print(...: any): nil
 
@@ -121,8 +121,8 @@ end
 declare Vec: Vector
 ```
 
-```toml title="lux.toml"
-globals = ["engine.d.lux"]
+```toml title="nebra.toml"
+globals = ["engine.d.neb"]
 ```
 
 Everything in there is now visible everywhere without an import.
@@ -136,14 +136,14 @@ example above.
 
 If your project is itself a library, let the compiler write the declaration for you:
 
-```toml title="lux.toml"
+```toml title="nebra.toml"
 generate_declarations = true
 ```
 
-Every build then emits a `.d.lux` next to the compiled Lua, describing the public surface of the
+Every build then emits a `.d.neb` next to the compiled Lua, describing the public surface of the
 package. Consumers get types with no hand-written file to maintain.
 
-```lux title="out/my-lib.d.lux"
+```nebra title="out/my-lib.d.neb"
 declare module "my-lib"
     declare function greet(name: string): string
     declare function panic(reason: string): never
@@ -152,10 +152,10 @@ end
 
 ## Declaring around Lua's keyword collisions
 
-A handful of Lua identifiers collide with Lux keywords, `string.match` being the common one. Those
+A handful of Lua identifiers collide with Nebra keywords, `string.match` being the common one. Those
 cannot be declared as members directly. Reach them with bracket access at the call site instead:
 
-```lux
+```nebra
 local m = string["match"](line, "^(%w+)")
 ```
 
@@ -167,12 +167,12 @@ better than nothing, because the arity is checked even when the types are not.
 **Declaration files never emit code.** You can be as detailed as you like without paying for it. The
 `interface Vec2` above exists purely so `vec2` and `length2` agree on a shape.
 
-**Doc comments carry over.** The `---` comments in a `.d.lux` show up on hover for consumers and in
+**Doc comments carry over.** The `---` comments in a `.d.neb` show up on hover for consumers and in
 generated documentation, so a good declaration file doubles as the library's reference.
 
 ## Next
 
-- [Declaration files](../language/declarations.md) is the complete reference for the `.d.lux` syntax.
+- [Declaration files](../language/declarations.md) is the complete reference for the `.d.neb` syntax.
 - [Sides](../advanced/sides.md) shows how to scope declarations to client, server or shared, which
   matters when you are typing a multiplayer game host.
 - [Modules and packages](./modules-and-packages.md) puts a declared library into a real project.

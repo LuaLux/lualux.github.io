@@ -1,5 +1,5 @@
 {
-  "name": "lualux-docs",
+  "name": "nebra-lang-docs",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -47,10 +47,10 @@
   "engines": {
     "node": ">=20.0"
   },
-  "description": "Documentation site for Lux, a typed superset of Lua",
+  "description": "Documentation site for Nebra, a typed superset of Lua",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LuaLux/lualux.github.io.git"
+    "url": "https://github.com/nebra-lang/nebra-lang.github.io.git"
   }
 }

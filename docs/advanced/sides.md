@@ -6,12 +6,12 @@ description: "Client, server and shared execution-side scoping for multiplayer s
 
 # Sides (Client / Server / Shared)
 
-Lux can split your type universe by **execution side** - the multiplayer
+Nebra can split your type universe by **execution side** - the multiplayer
 sandbox pattern made famous by Garry's Mod, FiveM, and nanos-world. A symbol
 declared as server-only can't be referenced from a client-side file, and vice
 versa. Errors are caught at compile time before they reach the runtime.
 
-> Sides are **opt-in per project**. Without a `[sides]` block in `lux.toml`,
+> Sides are **opt-in per project**. Without a `[sides]` block in `nebra.toml`,
 > every file accepts every symbol - exactly the pre-sides default.
 
 ## Mental model
@@ -21,7 +21,7 @@ Two pieces fit together:
 1. **Annotations on declarations** - each `declare class`, `declare function`,
    `class`, `interface`, etc. can carry `@side(client)`, `@side(server)`, or
    `@side(shared)`. The annotation says where the symbol is **available**.
-2. **Globs in `lux.toml`** - a `[sides]` block maps folder globs to the side
+2. **Globs in `nebra.toml`** - a `[sides]` block maps folder globs to the side
    bits a file is **allowed to reach**. A file in `src/Server/**` typically
    accepts `["server", "shared"]`.
 
@@ -35,7 +35,7 @@ are reachable from any file (so existing code keeps working).
 members - methods, fields, constructors, getters/setters, operators. Both
 regular and `declare` forms are supported.
 
-```lux
+```nebra
 declare class Player
     Name: string
 
@@ -72,7 +72,7 @@ same as not annotating at all - it means "reachable from anywhere".
 ## Configuring file scopes
 
 ```toml
-# lux.toml
+# nebra.toml
 [sides]
 "src/Client/**" = ["client", "shared"]
 "src/Server/**" = ["server", "shared"]
@@ -132,7 +132,7 @@ reference and your CI fails the build.
   the same scoping.
 - `@side` is a **builtin compiler annotation** - it does not go through the
   user-script annotation pipeline, so you cannot redefine or rewrite it from
-  a `.lux` annotation file.
+  a `.neb` annotation file.
 - Imported symbols inherit the side of the original declaration; you don't
   need to re-annotate at the import site.
 - Type parameters (`<T>`) are never side-restricted - the side check skips

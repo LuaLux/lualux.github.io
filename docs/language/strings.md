@@ -8,9 +8,9 @@ description: "String literal forms, escape sequences, interpolation and the conf
 
 ## String Literals
 
-Lux supports all Lua string forms:
+Nebra supports all Lua string forms:
 
-```lux
+```nebra
 local a = "double quoted"
 local b = 'single quoted'
 local c = [[long bracket string
@@ -22,7 +22,7 @@ local d = [==[nested brackets]==]
 
 When `string_interpolation = true` in config, backtick strings support embedded expressions:
 
-```lux
+```nebra
 local name = "Alice"
 local age = 30
 local msg = `Hello, {name}! You are {age} years old.`
@@ -38,14 +38,14 @@ local msg = "Hello, " .. tostring(name) .. "! You are " .. tostring(age) .. " ye
 
 Any expression can be embedded:
 
-```lux
+```nebra
 local result = `2 + 2 = {2 + 2}`
 local info = `Length: {#items}, First: {items[1]}`
 ```
 
 ### Escaping
 
-```lux
+```nebra
 local escaped = `Use \{braces\} literally`
 local backtick = `Use \` for backticks`
 ```
@@ -54,13 +54,13 @@ local backtick = `Use \` for backticks`
 
 The `..` operator always works for concatenation:
 
-```lux
+```nebra
 local greeting = "Hello" .. " " .. "World"
 ```
 
 With `concat_operator = "+"` in config, `+` also works:
 
-```lux
+```nebra
 local greeting = "Hello" + " " + "World"
 ```
 

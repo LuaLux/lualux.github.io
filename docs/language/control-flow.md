@@ -8,7 +8,7 @@ description: "if, while, repeat, numeric and generic for, do blocks, break N, co
 
 ## If / Elseif / Else
 
-```lux
+```nebra
 if x > 0 then
     print("positive")
 elseif x < 0 then
@@ -20,7 +20,7 @@ end
 
 ## While Loop
 
-```lux
+```nebra
 while condition do
     -- body
 end
@@ -28,7 +28,7 @@ end
 
 ## Repeat-Until Loop
 
-```lux
+```nebra
 repeat
     -- body
 until condition
@@ -36,7 +36,7 @@ until condition
 
 ## Numeric For
 
-```lux
+```nebra
 for i = 1, 10 do
     print(i)
 end
@@ -48,7 +48,7 @@ end
 
 ## Generic For
 
-```lux
+```nebra
 for k, v in pairs(tbl) do
     print(k, v)
 end
@@ -64,7 +64,7 @@ The compiler performs iteration type checking: when iterating over typed collect
 
 Creates a new scope:
 
-```lux
+```nebra
 do
     local temp = compute()
     -- temp is only visible here
@@ -73,7 +73,7 @@ end
 
 ## Break
 
-```lux
+```nebra
 while true do
     if done then break end
 end
@@ -81,7 +81,7 @@ end
 
 ## Labels & Goto
 
-```lux
+```nebra
 ::retry::
 local ok = tryOperation()
 if not ok then

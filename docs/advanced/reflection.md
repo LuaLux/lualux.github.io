@@ -10,12 +10,12 @@ Reflection lets a program inspect its own types **at runtime** - enumerate a
 class's fields and methods, look a type up by name, construct an instance from
 its descriptor, read the annotations attached to a declaration, and so on.
 
-Unlike most compiled languages, Lux reflection is deliberately **runtime**, not
-compile-time. Lux targets environments - game-mod sandboxes especially -
+Unlike most compiled languages, Nebra reflection is deliberately **runtime**, not
+compile-time. Nebra targets environments - game-mod sandboxes especially -
 where you compile scripts but never control the Lua runtime they load into. There
 is no host process to ask "what fields does this class have?". So instead of
-keeping the metadata in the compiler, Lux **emits** it: the compiler writes type
-descriptors into a global registry (`_G.__lux_reflect`) as part of the output Lua,
+keeping the metadata in the compiler, Nebra **emits** it: the compiler writes type
+descriptors into a global registry (`_G.__nebra_reflect`) as part of the output Lua,
 and the `reflect` library reads that registry back at runtime.
 
 ```lua
@@ -39,7 +39,7 @@ print(info.fields[0].type.name)  -- "string"
 
 ## Enabling reflection
 
-Metadata emission is controlled by the `[reflection]` section of `lux.toml`:
+Metadata emission is controlled by the `[reflection]` section of `nebra.toml`:
 
 ```toml
 [reflection]
@@ -88,7 +88,7 @@ Every registry entry is keyed by a stable id of the form:
 <module>::<Name>
 ```
 
-The module segment is your project's `name` (from `lux.toml`) for the root
+The module segment is your project's `name` (from `nebra.toml`) for the root
 package, and the directory leaf for each dependency - so a `Widget` class in
 an imported `widget` package is `widget::Widget`, distinct from a `Widget` in your
 own `game::Widget`. Ids are stable across files: a cross-module reference and the
@@ -100,7 +100,7 @@ no matter which file asked for it.
 ## The `reflect` library
 
 `reflect` is a global; no import is required. Its full typed surface lives in
-`stdlib/reflect.d.lux`.
+`stdlib/reflect.d.neb`.
 
 ### `reflect.Of(value)` - reflect by static type
 
@@ -188,7 +188,7 @@ end
 
 ### Annotations at runtime
 
-Annotations are compile-time, but Lux preserves them in the registry in a
+Annotations are compile-time, but Nebra preserves them in the registry in a
 simplified, runtime-readable form (`{ name, args }`):
 
 ```lua
@@ -207,7 +207,7 @@ end
 ## Descriptor shapes
 
 Descriptors are plain Lua tables with a `kind` tag. The precise shapes are
-declared as interfaces in `stdlib/reflect.d.lux`, so the collection queries are
+declared as interfaces in `stdlib/reflect.d.neb`, so the collection queries are
 fully typed:
 
 - **`TypeDesc`** - a structural type description. `kind` selects the payload:
@@ -225,7 +225,7 @@ fully typed:
   each with a `type: TypeDesc`; methods carry `isStatic` / `isAbstract` /
   `isOverride` / `isAsync` flags where relevant.
 
-> Reflection arrays follow Lux's [configurable index base](../language/tables.md). With the
+> Reflection arrays follow Nebra's [configurable index base](../language/tables.md). With the
 > default 0-based indexing, `info.fields[0]` is the first field.
 
 ---

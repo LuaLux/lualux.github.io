@@ -1,31 +1,31 @@
 ---
 sidebar_position: 5
 title: "Standalone Binaries"
-description: "Bundling a Lux project into a single self-contained native executable with lux compile."
+description: "Bundling a Nebra project into a single self-contained native executable with nebra compile."
 ---
 
 # Standalone Binaries
 
-`lux compile` bundles a Lux project into a **single, self-contained native executable** that runs on a machine with neither Lua nor .NET installed. The bundle includes:
+`nebra compile` bundles a Nebra project into a **single, self-contained native executable** that runs on a machine with neither Lua nor .NET installed. The bundle includes:
 
 - All of your project's compiled `.lua` files
-- All `.lua` and `.lux` files from installed dependencies (`lux_modules/`)
+- All `.lua` and `.neb` files from installed dependencies (`nebra_modules/`)
 - The embedded Lua 5.4 interpreter (via KeraLua)
-- The Lux stdlib bindings (HTTP, JSON, FS, Console, Project)
+- The Nebra stdlib bindings (HTTP, JSON, FS, Console, Project)
 - A tiny C# launcher that wires everything together
 
 ```bash
-lux compile                    # → ./<project-name>
-lux compile --out dist/server  # custom path
-lux compile --target linux-arm64
-lux compile --aot              # experimental: smaller, faster, more brittle
+nebra compile                    # → ./<project-name>
+nebra compile --out dist/server  # custom path
+nebra compile --target linux-arm64
+nebra compile --aot              # experimental: smaller, faster, more brittle
 ```
 
 ---
 
 ## Requirements
 
-The build host (where you run `lux compile`) needs:
+The build host (where you run `nebra compile`) needs:
 
 - **The .NET 10 SDK** - the launcher is compiled through `dotnet publish`. Install from [dotnet.microsoft.com](https://dotnet.microsoft.com/download).
 - **Network access on first invocation** - KeraLua is pulled from NuGet. Cached afterwards; subsequent compiles are offline.
@@ -37,7 +37,7 @@ The **target machine** (where the produced binary runs) needs **nothing**. The f
 ## How it works
 
 ```
-[1/5] Compiling Lux source            (same pipeline as `lux build`)
+[1/5] Compiling Nebra source            (same pipeline as `nebra build`)
 [2/5] Bundle target: <name> for <rid>
 [3/5] Bundling N module(s) and publishing
 [4/5] Copying binary to output path
@@ -46,14 +46,14 @@ The **target machine** (where the produced binary runs) needs **nothing**. The f
 
 Step 3 is where the magic happens:
 
-1. A temp directory is created (`/tmp/lux-compile-<rand>/`).
-2. Every compiled `.lua` from your project and every `.lua` / `.lux` (compiled) from `lux_modules/` is written into `temp/resources/<flattened-name>.lua`.
+1. A temp directory is created (`/tmp/nebra-compile-<rand>/`).
+2. Every compiled `.lua` from your project and every `.lua` / `.neb` (compiled) from `nebra_modules/` is written into `temp/resources/<flattened-name>.lua`.
 3. A `Launcher.csproj` is generated that:
    - Targets `net10.0` with `SelfContained=true` and `PublishSingleFile=true`.
-   - References `Lux.Runtime.dll` (the embedded Lua wrapper, located via the running `lux` binary's path).
+   - References `Nebra.Runtime.dll` (the embedded Lua wrapper, located via the running `nebra` binary's path).
    - Marks every `.lua` file as an `<EmbeddedResource>` with a `LogicalName` matching the Lua module name (so `require("foo/bar")` works at runtime).
 4. A `Program.cs` is generated that:
-   - Constructs a `LuxRuntime`.
+   - Constructs a `NebraRuntime`.
    - Calls `RegisterEmbeddedModule(name, asm, resourceName)` for every bundled module - this populates `package.preload[name]` from the embedded resource at runtime.
    - Forwards `args` to the Lua `arg` table.
    - Calls `require(<entry-module>)` to kick off execution.
@@ -67,8 +67,8 @@ After publish, the resulting executable is copied to `--out` (default: `./<name>
 
 Your bundle includes:
 
-- Every `.lux` file under `<source>/**` (compiled by the same pipeline that handles `lux build`).
-- Every `.lua` and `.lux` file under `lux_modules/<pkg>/` - addressed by the module name `<pkg>` (for `init.lua`/`init.lux`) or `<pkg>/<sub-path>`.
+- Every `.neb` file under `<source>/**` (compiled by the same pipeline that handles `nebra build`).
+- Every `.lua` and `.neb` file under `nebra_modules/<pkg>/` - addressed by the module name `<pkg>` (for `init.lua`/`init.neb`) or `<pkg>/<sub-path>`.
 
 The module name used at runtime mirrors what `require(...)` would search for under Lua's normal `package.path`. So `import { x } from "lua-math"` compiles to `require("lua-math")` which finds `package.preload["lua-math"]`, which the launcher set up from the embedded resource for `lua_modules/lua-math/init.lua`.
 
@@ -76,17 +76,17 @@ The module name used at runtime mirrors what `require(...)` would search for und
 
 ## Native dependencies
 
-`lux compile` **fails fast** if it finds a native shared library (`.so`, `.dylib`, `.dll`) inside `lux_modules/`:
+`nebra compile` **fails fast** if it finds a native shared library (`.so`, `.dylib`, `.dll`) inside `nebra_modules/`:
 
 ```
 error: standalone binary cannot bundle native modules:
-  • /path/to/lux_modules/lua-protobuf/libpb.so
-Remove the offending package or use 'lux run' instead.
+  • /path/to/nebra_modules/lua-protobuf/libpb.so
+Remove the offending package or use 'nebra run' instead.
 ```
 
 The reason is correctness, not policy - bundling a `.so` would require us to know the target RID at fetch time, ship matching binaries, and arrange dlopen paths inside the self-extract cache. Future versions may relax this for vetted packages; for now, anything with C deps stays out.
 
-If you need a native package, use `lux run` (which keeps `package.cpath` pointing at the on-disk `lux_modules/`) or vendor the C build into the launcher manually.
+If you need a native package, use `nebra run` (which keeps `package.cpath` pointing at the on-disk `nebra_modules/`) or vendor the C build into the launcher manually.
 
 ---
 
@@ -104,8 +104,8 @@ If you need a native package, use `lux run` (which keeps `package.cpath` pointin
 | `win-arm64`    | ARM64 Windows (Surface Pro X, …)  |
 
 ```bash
-lux compile --target linux-arm64
-lux compile --target win-x64
+nebra compile --target linux-arm64
+nebra compile --target win-x64
 ```
 
 The .NET runtime packs for non-host RIDs may not be installed by default. `dotnet publish` will tell you what to install (typically `dotnet workload install ...`). The single-file path works for every RID; the `--aot` path may require additional native toolchains on the host.
@@ -119,7 +119,7 @@ The .NET runtime packs for non-host RIDs may not be installed by default. `dotne
 | SingleFile    | ~70 MB    | ~70 MB      | ~70 MB      | ~70 MB      |
 | `--aot`       | ~10-20 MB | ~10-20 MB   | ~10-20 MB   | ~10-20 MB   |
 
-SingleFile mode bundles the entire .NET runtime and all native libs into the executable. AOT compiles to native code with much smaller footprint but needs a working AOT toolchain on the build host (clang/lld on Linux, MSVC on Windows). AOT is **experimental** in Lux - reflection-heavy code paths in `Lux.Runtime` may need additional `DynamicallyAccessedMembers` annotations to survive trimming.
+SingleFile mode bundles the entire .NET runtime and all native libs into the executable. AOT compiles to native code with much smaller footprint but needs a working AOT toolchain on the build host (clang/lld on Linux, MSVC on Windows). AOT is **experimental** in Nebra - reflection-heavy code paths in `Nebra.Runtime` may need additional `DynamicallyAccessedMembers` annotations to survive trimming.
 
 ---
 
@@ -140,11 +140,11 @@ SingleFile mode bundles the entire .NET runtime and all native libs into the exe
 **`error: dotnet SDK not found in PATH`**
 Install the .NET 10 SDK and ensure `dotnet --version` runs.
 
-**`error: cannot locate Lux.Runtime.dll next to the running lux binary`**
-You're running an in-source `lux` build that hasn't been built yet (or has a corrupted `bin/`). Re-run `dotnet build Lux.sln` and retry.
+**`error: cannot locate Nebra.Runtime.dll next to the running nebra binary`**
+You're running an in-source `nebra` build that hasn't been built yet (or has a corrupted `bin/`). Re-run `dotnet build Nebra.sln` and retry.
 
 **`error: standalone binary cannot bundle native modules`**
-Your dependency tree includes `.so`/`.dylib`/`.dll` files. Remove the offending package or use `lux run`. See [Native dependencies](#native-dependencies).
+Your dependency tree includes `.so`/`.dylib`/`.dll` files. Remove the offending package or use `nebra run`. See [Native dependencies](#native-dependencies).
 
 **`error: dotnet publish failed`**
 The temp launcher project failed to build. Pass `--keep-build` and inspect the temp directory printed in the error output. Common cause: missing runtime pack for a cross-RID target.
@@ -161,7 +161,7 @@ SingleFile mode self-extracts to a temp cache on first run. Subsequent runs are 
 
 | Tool          | Output                            | Pros                                     | Cons                              |
 |---------------|-----------------------------------|------------------------------------------|-----------------------------------|
-| `lux build`   | A folder of `.lua` files          | Smallest output; debuggable              | Needs Lua on the target           |
-| `lux run`     | Nothing (runs in-process)         | Fastest iteration                        | Dev-time only                     |
-| `lux compile` | A single native binary             | Ships anywhere; zero deps                | 70 MB; first-launch extract       |
-| `lux compile --aot` | A native binary (smaller)    | Smallest; instant startup                | Needs native toolchain on build host; AOT-trim edge cases |
+| `nebra build`   | A folder of `.lua` files          | Smallest output; debuggable              | Needs Lua on the target           |
+| `nebra run`     | Nothing (runs in-process)         | Fastest iteration                        | Dev-time only                     |
+| `nebra compile` | A single native binary             | Ships anywhere; zero deps                | 70 MB; first-launch extract       |
+| `nebra compile --aot` | A native binary (smaller)    | Smallest; instant startup                | Needs native toolchain on build host; AOT-trim edge cases |

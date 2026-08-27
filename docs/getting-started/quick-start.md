@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: "Quick Start"
-description: "Create a Lux project, write your first typed module, compile it and run it. About five minutes end to end."
+description: "Create a Nebra project, write your first typed module, compile it and run it. About five minutes end to end."
 ---
 
 # Quick Start
@@ -13,24 +13,24 @@ produces at each step. It assumes you have already
 ## Create a project
 
 ```bash
-mkdir hello-lux && cd hello-lux
-lux init
+mkdir hello-nebra && cd hello-nebra
+nebra init
 ```
 
-`lux init` writes three things and refuses to clobber an existing `lux.toml`:
+`nebra init` writes three things and refuses to clobber an existing `nebra.toml`:
 
 ```
-hello-lux/
-├── lux.toml       # project config
-├── src/           # your .lux sources
+hello-nebra/
+├── nebra.toml       # project config
+├── src/           # your .neb sources
 ├── out/           # generated .lua (gitignored)
-└── .gitignore     # pre-populated with out/ and lux_modules/
+└── .gitignore     # pre-populated with out/ and nebra_modules/
 ```
 
-The generated `lux.toml` is deliberately small. Everything else has a default:
+The generated `nebra.toml` is deliberately small. Everything else has a default:
 
-```toml title="lux.toml"
-name = "hello-lux"
+```toml title="nebra.toml"
+name = "hello-nebra"
 version = "0.1.0"
 target = "5.4"
 ```
@@ -40,9 +40,9 @@ compiler emits. See [Lua targets](./lua-targets.md) for what changes between ver
 
 ## Write some code
 
-Create `src/main.lux`:
+Create `src/main.neb`:
 
-```lux title="src/main.lux"
+```nebra title="src/main.neb"
 --- Formats a greeting for a person.
 ---@param name who to greet
 ---@return string the assembled greeting
@@ -55,22 +55,22 @@ print(greet("world"))
 
 Two things are already happening that plain Lua would not do for you. The `: string` on the
 parameter means passing a number is a compile error, not a runtime surprise. The `---` doc comments
-are picked up by hover in the editor and by `lux docs`.
+are picked up by hover in the editor and by `nebra docs`.
 
 ## Run it
 
 ```bash
-lux run
+nebra run
 ```
 
 ```
 Hello, world!
 ```
 
-`lux run` compiles the project and executes it with the Lua 5.4 interpreter embedded in the binary.
+`nebra run` compiles the project and executes it with the Lua 5.4 interpreter embedded in the binary.
 Nothing needs to be installed on the machine for this to work.
 
-If you only want the compiled output, use `lux build` instead. Either way, `out/main.lua` now
+If you only want the compiled output, use `nebra build` instead. Either way, `out/main.lua` now
 contains:
 
 ```lua title="out/main.lua"
@@ -87,17 +87,17 @@ output is the Lua you would have written anyway.
 
 Change the call to pass a number:
 
-```lux
+```nebra
 print(greet(42))
 ```
 
 ```bash
-lux build
+nebra build
 ```
 
 ```
 error[E2001]: expected 'string', but got 'number'
- --> src/main.lux:8:7
+ --> src/main.neb:8:7
   |
 8 | print(greet(42))
   |       ^^^^^^^^^
@@ -108,9 +108,9 @@ Nothing was written to `out/`. A failed build never emits partial output.
 
 ## Add a second module
 
-Create `src/math_utils.lux`:
+Create `src/math_utils.neb`:
 
-```lux title="src/math_utils.lux"
+```nebra title="src/math_utils.neb"
 --- Clamps `value` into the inclusive range [`min`, `max`].
 export function clamp(value: number, min: number, max: number): number
     if value < min then return min end
@@ -129,9 +129,9 @@ export function average(values: number[]): number
 end
 ```
 
-Import it from `main.lux`:
+Import it from `main.neb`:
 
-```lux title="src/main.lux"
+```nebra title="src/main.neb"
 import { clamp, average } from "math_utils"
 
 local scores: number[] = { 88, 94, 71, 100, 65 }
@@ -141,7 +141,7 @@ print("clamped: " .. tostring(clamp(140, 0, 100)))
 ```
 
 ```bash
-lux run
+nebra run
 ```
 
 ```
@@ -174,19 +174,19 @@ are deliberate, and both are one line to change.
 
 ### Array indexing starts at 0
 
-```toml title="lux.toml"
+```toml title="nebra.toml"
 [code]
 index_base = 0   # this is the default
 ```
 
-With `index_base = 0`, Lux array literals and index expressions are 0-based in *your* source, and
+With `index_base = 0`, Nebra array literals and index expressions are 0-based in *your* source, and
 the compiler shifts them to Lua's 1-based convention on the way out. `items[0]` compiles to
 `items[0 + 1]`, and `ipairs` is replaced by a polyfill that yields 0-based indices.
 
 That is convenient if you are coming from almost any other language, and jarring if you are coming
 from Lua. To keep Lua semantics, say so explicitly:
 
-```toml title="lux.toml"
+```toml title="nebra.toml"
 [code]
 index_base = 1
 ```
@@ -196,7 +196,7 @@ index expression in the codebase.
 
 ### Reflection metadata is emitted by default
 
-```toml title="lux.toml"
+```toml title="nebra.toml"
 [reflection]
 mode = "all"   # this is the default
 ```
@@ -208,7 +208,7 @@ genuinely useful for serialisation, dependency injection and plugin systems.
 It also means the top of every generated file carries a metadata block you did not write. If you are
 not using reflection, turn it off and the output gets noticeably smaller:
 
-```toml title="lux.toml"
+```toml title="nebra.toml"
 [reflection]
 mode = "none"      # or "annotated" to only emit for types you mark
 ```
@@ -220,16 +220,16 @@ The compiled output shown throughout these docs was produced with `mode = "none"
 While you are working, keep a watcher running in a second terminal:
 
 ```bash
-lux watch
+nebra watch
 ```
 
-It recompiles the whole project whenever a `.lux` file changes, debounces bursts of saves, prints
-errors without exiting, and reloads `lux.toml` on every rebuild so config changes take effect live.
+It recompiles the whole project whenever a `.neb` file changes, debounces bursts of saves, prints
+errors without exiting, and reloads `nebra.toml` on every rebuild so config changes take effect live.
 
 ## Where to go from here
 
 - [Editor setup](./editor-setup.md) gets you diagnostics, hover types and completion while you type.
-- [Project configuration](./project-configuration.md) explains the rest of `lux.toml`.
+- [Project configuration](./project-configuration.md) explains the rest of `nebra.toml`.
 - The [type system](../language/types.md) is the natural next read, followed by
   [classes](../language/classes.md) and [modules](../language/modules.md).
 - The [examples](../examples/overview.md) are complete programs, including one that spans three

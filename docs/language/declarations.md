@@ -1,16 +1,16 @@
 ---
 sidebar_position: 15
-title: "Declaration Files (.d.lux)"
-description: "Writing .d.lux files to type existing Lua code and third-party libraries."
+title: "Declaration Files (.d.neb)"
+description: "Writing .d.neb files to type existing Lua code and third-party libraries."
 ---
 
-# Declaration Files (.d.lux)
+# Declaration Files (.d.neb)
 
-Declaration files provide type information for existing Lua code without any runtime output. They use the `.d.lux` extension.
+Declaration files provide type information for existing Lua code without any runtime output. They use the `.d.neb` extension.
 
 ## Declaring Functions
 
-```lux
+```nebra
 declare function print(msg: string): void
 declare function type(v: any): string
 declare function tostring(v: any): string
@@ -19,7 +19,7 @@ declare function tonumber(s: string): number?
 
 ## Declaring Variables
 
-```lux
+```nebra
 declare pi: number
 declare version: string
 declare config: { [string]: any }
@@ -29,7 +29,7 @@ declare config: { [string]: any }
 
 Group declarations for a Lua module:
 
-```lux
+```nebra
 declare module "math"
     function abs(x: number): number
     function floor(x: number): number
@@ -45,7 +45,7 @@ end
 
 ## Declaring Enums
 
-```lux
+```nebra
 declare enum ErrorCode
     Success: number
     NotFound: number
@@ -57,7 +57,7 @@ Declared enums have typed members but no values (type-only).
 
 ## Declaring Classes
 
-```lux
+```nebra
 declare class Vector2
     x: number
     y: number
@@ -79,7 +79,7 @@ Declared classes support all modifiers: `abstract`, `static`, `protected`, `over
 
 ## Declaring Interfaces
 
-```lux
+```nebra
 declare interface Iterator
     function next(): any?
     function reset(): void
@@ -88,7 +88,7 @@ end
 
 ## Module Declarations with Classes
 
-```lux
+```nebra
 declare module "game/entities"
     class Entity
         id: number
@@ -111,7 +111,7 @@ end
 
 ## Auto-Generation
 
-When `generate_declarations = true` in config, Lux automatically generates `.d.lux` files from exported symbols:
+When `generate_declarations = true` in config, Nebra automatically generates `.d.neb` files from exported symbols:
 
 ```toml
 generate_declarations = true
@@ -119,7 +119,7 @@ generate_declarations = true
 
 For a file with:
 
-```lux
+```nebra
 export class Player
     name: string
     constructor(name: string)
@@ -131,9 +131,9 @@ export function createPlayer(name: string): Player
 end
 ```
 
-Lux generates:
+Nebra generates:
 
-```lux
+```nebra
 declare module "path/to/file"
     class Player
         name: string
@@ -149,9 +149,9 @@ end
 Point to declaration files in config:
 
 ```toml
-globals = ["lib/std.d.lux", "lib/"]
+globals = ["lib/std.d.neb", "lib/"]
 ```
 
-- Individual `.d.lux` files are loaded directly
-- Directories are scanned recursively for `.d.lux` files
+- Individual `.d.neb` files are loaded directly
+- Directories are scanned recursively for `.d.neb` files
 - All declared symbols become available globally across the project

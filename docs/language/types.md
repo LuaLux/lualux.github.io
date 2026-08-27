@@ -6,7 +6,7 @@ description: "Primitives, nullable and union types, arrays, maps, structs, tuple
 
 # Type System
 
-Lux adds an optional, gradual type system to Lua. All type annotations are compile-time only and stripped from the generated Lua output.
+Nebra adds an optional, gradual type system to Lua. All type annotations are compile-time only and stripped from the generated Lua output.
 
 ## Primitive Types
 
@@ -23,9 +23,9 @@ Lux adds an optional, gradual type system to Lua. All type annotations are compi
 | `userdata`| Opaque userdata        |
 | `never`   | The call never returns |
 
-```lux
+```nebra
 local count: number = 42
-local name: string = "Lux"
+local name: string = "Nebra"
 local active: boolean = true
 ```
 
@@ -33,7 +33,7 @@ local active: boolean = true
 
 Append `?` to make a type nullable (equivalent to `T | nil`):
 
-```lux
+```nebra
 local name: string? = nil
 local age: number? = 25
 ```
@@ -42,7 +42,7 @@ local age: number? = 25
 
 Use `|` to allow multiple types:
 
-```lux
+```nebra
 local id: string | number = "abc"
 local result: boolean | nil = true
 ```
@@ -51,7 +51,7 @@ local result: boolean | nil = true
 
 Append `[]` for arrays:
 
-```lux
+```nebra
 local nums: number[] = {1, 2, 3}
 local matrix: number[][] = {{1, 2}, {3, 4}}
 local names: string?[] = {"a", nil, "c"}  -- array of nullable strings
@@ -60,7 +60,7 @@ local data: number[]? = nil               -- nullable array
 
 ## Map Types
 
-```lux
+```nebra
 local config: { [string]: number } = { timeout = 30, retries = 3 }
 local lookup: { [number]: string } = { [1] = "one", [2] = "two" }
 ```
@@ -69,20 +69,20 @@ local lookup: { [number]: string } = { [1] = "one", [2] = "two" }
 
 Named fields with types:
 
-```lux
+```nebra
 local point: { x: number, y: number } = { x = 10, y = 20 }
 local user: { name: string, age: number, active: boolean }
 ```
 
 ### Meta Fields
 
-```lux
+```nebra
 local mt: { meta __index: (any) -> any, value: number }
 ```
 
 ## Function Types
 
-```lux
+```nebra
 local callback: (number, string) -> boolean
 local handler: (string) -> void
 local factory: () -> (number, string)       -- multi-return
@@ -92,7 +92,7 @@ local factory: () -> (number, string)       -- multi-return
 
 For multi-return values:
 
-```lux
+```nebra
 local result: (number, string) = getResult()
 function multi(): (string, number, boolean)
     return "ok", 42, true
@@ -104,7 +104,7 @@ end
 Use `...T` to return an arbitrary number of values of type `T` - the counterpart of a variadic
 parameter. It is valid as a function return type or as the trailing element of a tuple return:
 
-```lux
+```nebra
 function forward(arr: number[]): ...number
     return table.unpack(arr)          -- any number of numbers
 end
@@ -126,7 +126,7 @@ value" check. When captured by a single variable it collapses to `T`.
 does not come back. A function declared to return `never` always raises, exits the process, or
 loops forever. The two standard library functions that behave this way are declared that way:
 
-```lux
+```nebra
 declare function error(message: any, level: number?): never
 -- and, inside the `os` library
 function exit(code: any?, close: boolean?): never
@@ -134,7 +134,7 @@ function exit(code: any?, close: boolean?): never
 
 You can declare your own:
 
-```lux
+```nebra
 function panic(message: string): never
     error("panic: " .. message)
 end
@@ -143,7 +143,7 @@ end
 The compiler enforces the promise. A `never` function may not return a value and may not be able to
 reach its own end:
 
-```lux
+```nebra
 function bad(): never
     print("still here")     -- error: a function returning 'never' must not complete normally
 end
@@ -153,7 +153,7 @@ end
 
 Anything after a call that returns `never` can never run, so the compiler rejects it:
 
-```lux
+```nebra
 error("stop")
 print("unreachable")        -- error: code is unreachable
 ```
@@ -163,7 +163,7 @@ print("unreachable")        -- error: code is unreachable
 Because a `never` branch cannot produce a value, it drops out of the type of the surrounding
 expression. In `a or b`, reaching the result means `a` was truthy, so its `nil` is stripped:
 
-```lux
+```nebra
 local ffi = require("ffi") or error("not luajit")
 -- `require` succeeded - a failure would have gone to `error`, which never returns
 
@@ -177,7 +177,7 @@ local n = name(1) or panic("no name")   -- n: string, not string?
 The same holds for a guard clause whose body diverges - see
 [Nilability & Optionals](./nilability.md#nil-narrowing-in-conditionals):
 
-```lux
+```nebra
 local input: string? = read()
 if input == nil then
     panic("no input")
@@ -192,7 +192,7 @@ while nothing is assignable to it.
 
 Check a value's type at runtime:
 
-```lux
+```nebra
 if x is number then
     print(x + 1)
 end
@@ -211,7 +211,7 @@ A function whose return is written `param is Type` is a **type predicate**: it r
 argument bound to `param`. This is the way to recover a precise type from `any` or untyped Lua
 data (JSON, external APIs) - something `is`/`instanceof` can't do for arbitrary shapes.
 
-```lux
+```nebra
 function isString(value: any): value is string
     return type(value) == "string"
 end
@@ -233,7 +233,7 @@ to the wrong type. The named parameter must exist, and the guard must return on 
 
 Assert a type at compile-time (no runtime check):
 
-```lux
+```nebra
 local x: any = 42
 local n: number = x as number
 ```
@@ -242,6 +242,6 @@ local n: number = x as number
 
 Use parentheses to group complex types:
 
-```lux
+```nebra
 local arr: (string | number)[] = {"hello", 42}
 ```
